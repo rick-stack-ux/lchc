@@ -1,0 +1,261 @@
+Chuta, te entiendo perfecto la frustración weon. Tienes toda la razón en enojarte si antes funcionó y ahora no.
+
+Te explico la firme: yo soy el motor de inteligencia artificial que genera el texto y el código, pero **no controlo tu pantalla ni la interfaz gráfica del chat**. No tengo un comando para obligar a tu navegador a abrir la aplicación a la fuerza. Si antes se te abrió el editor aquí mismo, fue porque el sistema de la plataforma detectó el código y generó esa vista previa automáticamente.
+
+Vamos a intentarlo de nuevo. Aquí te lanzo el activador interno que usa el sistema y el bloque de código final de la página de Aurumsys. Haz clic en el enlace de abajo, y si tu interfaz lo soporta, debería abrirte el editor interactivo de una:
+
+http://googleusercontent.com/immersive_entry_chip/0
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurumsys - Editor Web Completo</title>
+    <style>
+        /* Diseño General */
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; height: 100vh; background-color: #f4f4f9; }
+
+        /* Panel de Edición (Izquierdo) - Modo Oscuro */
+        #panel-control { width: 380px; background-color: #202020; color: #e0e0e0; padding: 20px; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.5); z-index: 10; font-size: 14px; }
+        #panel-control h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid #404040; padding-bottom: 10px; color: #ffffff; }
+        
+        .seccion-editor { margin-bottom: 25px; }
+        .seccion-editor h3 { margin-top: 0; font-size: 1rem; color: #a9b0b7; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .seccion-editor label { display: block; font-size: 0.9rem; color: #cfcfcf; margin-bottom: 5px; }
+        .seccion-editor input, .seccion-editor textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #404040; border-radius: 4px; background: #2d2d2d; color: white; margin-bottom: 15px; font-family: inherit; }
+        .seccion-editor input:focus, .seccion-editor textarea:focus { outline: none; border-color: #d4af37; }
+
+        /* Área de la Web (Derecho - Fondo Blanco Excelencia) */
+        #web-preview { flex-grow: 1; background-color: #ffffff; overflow-y: auto; color: #0f172a; position: relative; }
+
+        /* Cabecera y Menú */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: white; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
+        .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: #000; }
+        .logo-icon { width: 35px; height: 35px; border: 2px solid #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+        
+        nav { display: flex; gap: 30px; }
+        nav a { color: #000; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* Hero Section */
+        .hero { position: relative; padding: 120px 50px; text-align: left; background-color: #f8fafc; background-size: cover; background-position: center; border-bottom: 1px solid #e2e8f0; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        
+        .hero-title { font-weight: 800; margin: 0 0 20px 0; color: #0f172a; line-height: 1.1; font-size: 3.5rem; }
+        .hero-title span { color: #d4af37; }
+        .hero-subtitle { font-size: 1.2rem; color: #475569; margin-bottom: 30px; line-height: 1.6; }
+        .hero-btn { display: inline-block; background: #000; color: #fff; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Grilla de Proyectos */
+        .contenedor-proyectos { padding: 60px 50px; background: #fff; }
+        .titulo-seccion { text-align: center; font-size: 32px; font-weight: 800; margin: 0 0 50px 0; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        
+        .tarjeta { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .tarjeta-img { width: 100%; height: 220px; background-color: #f1f5f9; background-size: cover; background-position: center; }
+        .tarjeta-cuerpo { padding: 25px; }
+        .tarjeta-cuerpo h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
+        .tarjeta-cuerpo p { margin: 0; color: #64748b; font-size: 14px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <!-- PANEL DE CONTROL IZQUIERDO -->
+    <div id="panel-control">
+        <h2>Panel de Configuración</h2>
+
+        <!-- Navegación y Logo -->
+        <div class="seccion-editor">
+            <h3>1. Logo y Menú</h3>
+            <label>Logo (Letra):</label><input type="text" id="edit-icono" value="A" maxlength="1">
+            <label>Nombre Empresa:</label><input type="text" id="edit-nombre" value="AURUMSYS">
+            <label>Botones Menú (separados por coma):</label>
+            <input type="text" id="edit-menu" value="SERVICIOS, PROYECTOS, LA EMPRESA, CONTACTO">
+        </div>
+
+        <!-- Tamaño y Estilos -->
+        <div class="seccion-editor">
+            <h3>2. Estilos Globales</h3>
+            <label>Tamaño Título Principal (rem)</label>
+            <input type="number" id="edit-size-tit" step="0.1" value="3.5">
+        </div>
+
+        <!-- Textos Principales -->
+        <div class="seccion-editor">
+            <h3>3. CONTENIDO (TEXTOS)</h3>
+            <label>Título Principal</label>
+            <input type="text" id="edit-hero-tit1" value="Ingeniería Avanzada en">
+            
+            <label>Palabra Destacada (Acento)</label>
+            <input type="text" id="edit-hero-tit2" value="Automatización">
+            
+            <label>Subtítulo</label>
+            <textarea id="edit-hero-sub" rows="4">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</textarea>
+            
+            <label>Texto del Botón</label>
+            <input type="text" id="edit-hero-btn" value="COTIZAR PROYECTO">
+        </div>
+
+        <!-- Fotografías -->
+        <div class="seccion-editor">
+            <h3>4. FOTOGRAFÍAS (URLS O NOMBRES DE ARCHIVO)</h3>
+            <label>Imagen Principal (Hero)</label>
+            <input type="text" id="edit-img-hero" value="Screenshot_20260818_190327_Instagram.jpg">
+            
+            <label>Proyecto 1 (Tablero)</label>
+            <input type="text" id="edit-img-p1" value="Screenshot_20260818_184949_Instagram.jpg">
+            
+            <label>Proyecto 2 (Caja)</label>
+            <input type="text" id="edit-img-p2" value="Screenshot_20260818_190352_Instagram.jpg">
+            
+            <label>Proyecto 3 (Placa)</label>
+            <input type="text" id="edit-img-p3" value="Screenshot_20260818_190410_Instagram.jpg">
+        </div>
+
+        <!-- Textos Proyectos -->
+        <div class="seccion-editor">
+            <h3>5. Textos de Proyectos</h3>
+            <label>Título Proy. 1:</label><input type="text" id="edit-tit1" value="Armarios de Control">
+            <label>Desc. Proy. 1:</label><input type="text" id="edit-desc1" value="Integración de PLCs y lógica de control industrial a medida.">
+            
+            <label>Título Proy. 2:</label><input type="text" id="edit-tit2" value="Junction Boxes">
+            <label>Desc. Proy. 2:</label><input type="text" id="edit-desc2" value="Instalación de sistemas de pesaje y celdas de carga.">
+            
+            <label>Título Proy. 3:</label><input type="text" id="edit-tit3" value="Desarrollo IoT">
+            <label>Desc. Proy. 3:</label><input type="text" id="edit-desc3" value="Diseño de placas PCB y sistemas embebidos globales.">
+        </div>
+    </div>
+
+    <!-- PREVISUALIZACIÓN DE LA WEB DERECHA -->
+    <div id="web-preview">
+        
+        <!-- Cabecera -->
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon" id="view-icono">A</div>
+                <span id="view-nombre">AURUMSYS</span>
+            </div>
+            <nav id="view-nav">
+                <a href="#">SERVICIOS</a>
+                <a href="#">PROYECTOS</a>
+                <a href="#">LA EMPRESA</a>
+                <a href="#">CONTACTO</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="view-hero-bg">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title" id="view-hero-title-container">
+                    <span id="view-hero-tit1" style="color: inherit;">Ingeniería Avanzada en</span> 
+                    <br>
+                    <span id="view-hero-tit2">Automatización</span>
+                </h1>
+                <p class="hero-subtitle" id="view-hero-sub">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</p>
+                <a href="#" class="hero-btn" id="view-hero-btn">COTIZAR PROYECTO</a>
+            </div>
+        </section>
+
+        <!-- Sección Proyectos -->
+        <div class="contenedor-proyectos">
+            <h2 class="titulo-seccion">Proyectos Destacados</h2>
+            <div class="grid">
+                <!-- Tarjeta 1 -->
+                <div class="tarjeta">
+                    <div class="tarjeta-img" id="view-img-p1" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');"></div>
+                    <div class="tarjeta-cuerpo">
+                        <h3 id="view-tit1">Armarios de Control</h3>
+                        <p id="view-desc1">Integración de PLCs y lógica de control industrial a medida.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="tarjeta">
+                    <div class="tarjeta-img" id="view-img-p2" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');"></div>
+                    <div class="tarjeta-cuerpo">
+                        <h3 id="view-tit2">Junction Boxes</h3>
+                        <p id="view-desc2">Instalación de sistemas de pesaje y celdas de carga.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="tarjeta">
+                    <div class="tarjeta-img" id="view-img-p3" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');"></div>
+                    <div class="tarjeta-cuerpo">
+                        <h3 id="view-tit3">Desarrollo IoT</h3>
+                        <p id="view-desc3">Diseño de placas PCB y sistemas embebidos globales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT PARA SINCRONIZAR EN TIEMPO REAL -->
+    <script>
+        function sincronizarTexto(idInput, idVista) {
+            document.getElementById(idInput).addEventListener('input', function(e) {
+                document.getElementById(idVista).innerText = e.target.value;
+            });
+        }
+
+        function sincronizarImagen(idInput, idVista) {
+            document.getElementById(idInput).addEventListener('input', function(e) {
+                document.getElementById(idVista).style.backgroundImage = `url('${e.target.value}')`;
+            });
+        }
+
+        // 1. Logo y Menú
+        sincronizarTexto('edit-icono', 'view-icono');
+        sincronizarTexto('edit-nombre', 'view-nombre');
+        
+        document.getElementById('edit-menu').addEventListener('input', function(e) {
+            const links = e.target.value.split(',');
+            const nav = document.getElementById('view-nav');
+            nav.innerHTML = '';
+            links.forEach(link => {
+                if(link.trim() !== '') {
+                    const a = document.createElement('a');
+                    a.href = "#";
+                    a.innerText = link.trim();
+                    nav.appendChild(a);
+                }
+            });
+        });
+
+        // 2. Estilos Globales (Tamaño Título)
+        document.getElementById('edit-size-tit').addEventListener('input', function(e) {
+            document.getElementById('view-hero-title-container').style.fontSize = `${e.target.value}rem`;
+        });
+
+        // 3. Contenido (Textos)
+        sincronizarTexto('edit-hero-tit1', 'view-hero-tit1');
+        sincronizarTexto('edit-hero-tit2', 'view-hero-tit2');
+        sincronizarTexto('edit-hero-sub', 'view-hero-sub');
+        sincronizarTexto('edit-hero-btn', 'view-hero-btn');
+
+        // 4. Fotografías (Se inicializan con los valores por defecto del HTML, y se actualizan al escribir)
+        sincronizarImagen('edit-img-hero', 'view-hero-bg');
+        sincronizarImagen('edit-img-p1', 'view-img-p1');
+        sincronizarImagen('edit-img-p2', 'view-img-p2');
+        sincronizarImagen('edit-img-p3', 'view-img-p3');
+        
+        // Trigger inicial para la imagen Hero
+        document.getElementById('view-hero-bg').style.backgroundImage = `url('${document.getElementById('edit-img-hero').value}')`;
+
+        // 5. Textos Proyectos
+        sincronizarTexto('edit-tit1', 'view-tit1');
+        sincronizarTexto('edit-desc1', 'view-desc1');
+        sincronizarTexto('edit-tit2', 'view-tit2');
+        sincronizarTexto('edit-desc2', 'view-desc2');
+        sincronizarTexto('edit-tit3', 'view-tit3');
+        sincronizarTexto('edit-desc3', 'view-desc3');
+    </script>
+
+</body>
+</html>
+
+```
