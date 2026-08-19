@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurumsys - Editor Web Completo</title>
-    <style>
+    <title>Aurumsys - Ingeniería y Control</title>
+    <style id="estilos-base">
         /* Diseño General */
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; height: 100vh; background-color: #f4f4f9; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; height: 100vh; background-color: #f4f4f9; overflow: hidden; }
 
         /* Panel de Edición (Izquierdo) - Modo Oscuro */
         #panel-control { width: 380px; background-color: #202020; color: #e0e0e0; padding: 20px; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.5); z-index: 10; font-size: 14px; }
@@ -57,7 +57,6 @@
     <div id="panel-control">
         <h2>Panel de Configuración</h2>
 
-        <!-- Navegación y Logo -->
         <div class="seccion-editor">
             <h3>1. Logo y Menú</h3>
             <label>Logo (Letra):</label><input type="text" id="edit-icono" value="A" maxlength="1">
@@ -66,63 +65,57 @@
             <input type="text" id="edit-menu" value="SERVICIOS, PROYECTOS, LA EMPRESA, CONTACTO">
         </div>
 
-        <!-- Tamaño y Estilos -->
         <div class="seccion-editor">
             <h3>2. Estilos Globales</h3>
             <label>Tamaño Título Principal (rem)</label>
             <input type="number" id="edit-size-tit" step="0.1" value="3.5">
         </div>
 
-        <!-- Textos Principales -->
         <div class="seccion-editor">
             <h3>3. CONTENIDO (TEXTOS)</h3>
             <label>Título Principal</label>
             <input type="text" id="edit-hero-tit1" value="Ingeniería Avanzada en">
-            
             <label>Palabra Destacada (Acento)</label>
             <input type="text" id="edit-hero-tit2" value="Automatización">
-            
             <label>Subtítulo</label>
             <textarea id="edit-hero-sub" rows="4">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</textarea>
-            
             <label>Texto del Botón</label>
             <input type="text" id="edit-hero-btn" value="COTIZAR PROYECTO">
         </div>
 
-        <!-- Fotografías -->
         <div class="seccion-editor">
             <h3>4. FOTOGRAFÍAS (URLS O NOMBRES DE ARCHIVO)</h3>
             <label>Imagen Principal (Hero)</label>
             <input type="text" id="edit-img-hero" value="Screenshot_20260818_190327_Instagram.jpg">
-            
             <label>Proyecto 1 (Tablero)</label>
             <input type="text" id="edit-img-p1" value="Screenshot_20260818_184949_Instagram.jpg">
-            
             <label>Proyecto 2 (Caja)</label>
             <input type="text" id="edit-img-p2" value="Screenshot_20260818_190352_Instagram.jpg">
-            
             <label>Proyecto 3 (Placa)</label>
             <input type="text" id="edit-img-p3" value="Screenshot_20260818_190410_Instagram.jpg">
         </div>
 
-        <!-- Textos Proyectos -->
         <div class="seccion-editor">
             <h3>5. Textos de Proyectos</h3>
             <label>Título Proy. 1:</label><input type="text" id="edit-tit1" value="Armarios de Control">
             <label>Desc. Proy. 1:</label><input type="text" id="edit-desc1" value="Integración de PLCs y lógica de control industrial a medida.">
-            
             <label>Título Proy. 2:</label><input type="text" id="edit-tit2" value="Junction Boxes">
             <label>Desc. Proy. 2:</label><input type="text" id="edit-desc2" value="Instalación de sistemas de pesaje y celdas de carga.">
-            
             <label>Título Proy. 3:</label><input type="text" id="edit-tit3" value="Desarrollo IoT">
             <label>Desc. Proy. 3:</label><input type="text" id="edit-desc3" value="Diseño de placas PCB y sistemas embebidos globales.">
+        </div>
+
+        <!-- BOTÓN DE GUARDADO FINAL -->
+        <div class="seccion-editor" style="background: #2c2c2c; border-left: 4px solid #d4af37;">
+            <h3 style="color: #fff;">💾 GUARDAR DISEÑO</h3>
+            <p style="font-size: 12px; color: #a9b0b7;">Descarga tu web limpia (sin este menú negro) lista para clientes.</p>
+            <button onclick="descargarWeb()" style="width: 100%; padding: 12px; background: #d4af37; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">DESCARGAR WEB FINAL</button>
         </div>
     </div>
 
     <!-- PREVISUALIZACIÓN DE LA WEB DERECHA -->
     <div id="web-preview">
         
-        <!-- Cabecera -->
         <header>
             <div class="logo-container">
                 <div class="logo-icon" id="view-icono">A</div>
@@ -136,7 +129,6 @@
             </nav>
         </header>
 
-        <!-- Hero Section -->
         <section class="hero" id="view-hero-bg">
             <div class="hero-overlay"></div>
             <div class="hero-content">
@@ -150,11 +142,9 @@
             </div>
         </section>
 
-        <!-- Sección Proyectos -->
         <div class="contenedor-proyectos">
             <h2 class="titulo-seccion">Proyectos Destacados</h2>
             <div class="grid">
-                <!-- Tarjeta 1 -->
                 <div class="tarjeta">
                     <div class="tarjeta-img" id="view-img-p1" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');"></div>
                     <div class="tarjeta-cuerpo">
@@ -163,7 +153,6 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 2 -->
                 <div class="tarjeta">
                     <div class="tarjeta-img" id="view-img-p2" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');"></div>
                     <div class="tarjeta-cuerpo">
@@ -172,7 +161,6 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 3 -->
                 <div class="tarjeta">
                     <div class="tarjeta-img" id="view-img-p3" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');"></div>
                     <div class="tarjeta-cuerpo">
@@ -182,10 +170,9 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- SCRIPT PARA SINCRONIZAR EN TIEMPO REAL -->
+    <!-- SCRIPT PARA SINCRONIZAR Y DESCARGAR -->
     <script>
         function sincronizarTexto(idInput, idVista) {
             document.getElementById(idInput).addEventListener('input', function(e) {
@@ -199,7 +186,6 @@
             });
         }
 
-        // 1. Logo y Menú
         sincronizarTexto('edit-icono', 'view-icono');
         sincronizarTexto('edit-nombre', 'view-nombre');
         
@@ -217,36 +203,54 @@
             });
         });
 
-        // 2. Estilos Globales (Tamaño Título)
         document.getElementById('edit-size-tit').addEventListener('input', function(e) {
             document.getElementById('view-hero-title-container').style.fontSize = `${e.target.value}rem`;
         });
 
-        // 3. Contenido (Textos)
         sincronizarTexto('edit-hero-tit1', 'view-hero-tit1');
         sincronizarTexto('edit-hero-tit2', 'view-hero-tit2');
         sincronizarTexto('edit-hero-sub', 'view-hero-sub');
         sincronizarTexto('edit-hero-btn', 'view-hero-btn');
 
-        // 4. Fotografías (Se inicializan con los valores por defecto del HTML, y se actualizan al escribir)
         sincronizarImagen('edit-img-hero', 'view-hero-bg');
         sincronizarImagen('edit-img-p1', 'view-img-p1');
         sincronizarImagen('edit-img-p2', 'view-img-p2');
         sincronizarImagen('edit-img-p3', 'view-img-p3');
-        
-        // Trigger inicial para la imagen Hero
         document.getElementById('view-hero-bg').style.backgroundImage = `url('${document.getElementById('edit-img-hero').value}')`;
 
-        // 5. Textos Proyectos
         sincronizarTexto('edit-tit1', 'view-tit1');
         sincronizarTexto('edit-desc1', 'view-desc1');
         sincronizarTexto('edit-tit2', 'view-tit2');
         sincronizarTexto('edit-desc2', 'view-desc2');
         sincronizarTexto('edit-tit3', 'view-tit3');
         sincronizarTexto('edit-desc3', 'view-desc3');
-    </script>
 
+        // FUNCIÓN PARA EXPORTAR LA WEB LIMPIA
+        function descargarWeb() {
+            let clon = document.documentElement.cloneNode(true);
+            
+            // Reemplazar todo el contenido por solo la web (sin panel)
+            let preview = clon.querySelector('#web-preview');
+            let body = clon.querySelector('body');
+            body.innerHTML = preview.innerHTML;
+            
+            // Ajustar el CSS para que la web descargada scrollee normal
+            let nuevoEstilo = clon.createElement('style');
+            nuevoEstilo.innerHTML = "body { display: block !important; height: auto !important; background-color: #fff !important; overflow-y: auto !important; }";
+            clon.querySelector('head').appendChild(nuevoEstilo);
+            
+            // Eliminar los scripts del editor
+            let scripts = clon.querySelectorAll('script');
+            scripts.forEach(s => s.remove());
+
+            // Descargar el archivo
+            let htmlFinal = "<!DOCTYPE html>\n" + clon.outerHTML;
+            let blob = new Blob([htmlFinal], {type: "text/html;charset=utf-8"});
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "index.html"; // Mismo nombre para subir a Github
+            a.click();
+        }
+    </script>
 </body>
 </html>
-
-```
