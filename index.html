@@ -29,7 +29,7 @@
 
         .animado {
             animation: fadeUp 1s ease forwards;
-            opacity: 0; /* Empieza invisible para la animación */
+            opacity: 0;
         }
         
         .delay-1 { animation-delay: 0.2s; }
@@ -107,13 +107,59 @@
         header { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 50px; border-bottom: 1px solid #e2e8f0; 
-            margin-top: 50px; /* Espacio para la barra de herramientas */
+            margin-top: 50px; /* Espacio para la barra */
+            background: white;
+            position: relative;
+            z-index: 100;
         }
         .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; }
         .logo-icon { width: 35px; height: 35px; border: 2px solid var(--oscuro); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
         
-        nav { display: flex; gap: 30px; }
-        nav span { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px; }
+        /* NAVEGACIÓN Y SUBMENÚS */
+        nav { display: flex; gap: 30px; align-items: center; }
+        
+        .nav-item { position: relative; padding: 15px 0; }
+        .nav-principal { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px; cursor: default; }
+        
+        /* Indicador de que tiene submenú */
+        .tiene-submenu::after { content: " ▾"; font-size: 12px; color: var(--dorado); }
+
+        .submenu {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+            transform: translateY(10px);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-item:hover .submenu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .submenu-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: var(--texto);
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .submenu-item.editable:hover, .submenu-item.editable:focus {
+            background-color: rgba(212, 175, 55, 0.05);
+            color: var(--oscuro);
+        }
 
         /* Hero Section */
         .hero { position: relative; padding: 120px 50px; text-align: left; background-color: #f8fafc; }
@@ -134,7 +180,7 @@
         .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
         
-        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; }
+        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; background: white; }
         .tarjeta:hover { transform: translateY(-10px); }
         
         .tarjeta-img { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #eee; }
@@ -156,29 +202,52 @@
 
     <!-- BARRA DE EDICIÓN -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
-        <span>🛠️ <strong>MODO EDICIÓN:</strong> Haz clic en cualquier texto para cambiarlo. Clic en las fotos para cargar las tuyas.</span>
+        <span>🛠️ <strong>MODO EDICIÓN:</strong> Haz clic en cualquier texto para cambiarlo (¡incluso en los submenús al pasar el mouse!).</span>
         <button onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
     </div>
 
-    <!-- CABECERA -->
+    <!-- CABECERA CON SUBMENÚS -->
     <header class="animado">
         <div class="logo-container">
             <div class="logo-icon editable" contenteditable="true">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
         <nav>
-            <span class="editable" contenteditable="true">Servicios</span>
-            <span class="editable" contenteditable="true">Proyectos</span>
-            <span class="editable" contenteditable="true">La Empresa</span>
-            <span class="editable" contenteditable="true">Contacto</span>
+            <!-- Opción con Submenú 1 -->
+            <div class="nav-item">
+                <span class="nav-principal tiene-submenu editable" contenteditable="true">Servicios</span>
+                <div class="submenu">
+                    <span class="submenu-item editable" contenteditable="true">Automatización PLC y Control</span>
+                    <span class="submenu-item editable" contenteditable="true">Desarrollo de Hardware IoT</span>
+                    <span class="submenu-item editable" contenteditable="true">Diseño Eléctrico de Tableros</span>
+                </div>
+            </div>
+
+            <!-- Opción con Submenú 2 -->
+            <div class="nav-item">
+                <span class="nav-principal tiene-submenu editable" contenteditable="true">Proyectos</span>
+                <div class="submenu">
+                    <span class="submenu-item editable" contenteditable="true">Casos de Éxito Industriales</span>
+                    <span class="submenu-item editable" contenteditable="true">Sistema de Telemetría Sonda-T</span>
+                    <span class="submenu-item editable" contenteditable="true">Monitoreo y Pesaje de Silos</span>
+                </div>
+            </div>
+
+            <!-- Opción Simple -->
+            <div class="nav-item">
+                <span class="nav-principal editable" contenteditable="true">La Empresa</span>
+            </div>
+
+            <!-- Opción Simple -->
+            <div class="nav-item">
+                <span class="nav-principal editable" contenteditable="true">Contacto</span>
+            </div>
         </nav>
     </header>
 
     <!-- HERO (INICIO) -->
     <section class="hero">
-        <!-- Clic para cambiar el fondo -->
         <div class="hero-bg img-editable" onclick="cambiarFondo(this)"></div>
-        
         <div class="hero-content animado delay-1">
             <h1 class="hero-title">
                 <span class="editable" contenteditable="true">Ingeniería Avanzada en</span> <br>
@@ -194,7 +263,6 @@
         <h2 class="titulo-seccion editable animado" contenteditable="true">Proyectos Destacados</h2>
         
         <div class="grid">
-            <!-- Tarjeta 1 -->
             <div class="tarjeta animado delay-1">
                 <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
                 <div class="tarjeta-cuerpo">
@@ -203,7 +271,6 @@
                 </div>
             </div>
 
-            <!-- Tarjeta 2 -->
             <div class="tarjeta animado delay-2">
                 <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
                 <div class="tarjeta-cuerpo">
@@ -212,7 +279,6 @@
                 </div>
             </div>
 
-            <!-- Tarjeta 3 -->
             <div class="tarjeta animado delay-3">
                 <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
                 <div class="tarjeta-cuerpo">
@@ -246,7 +312,6 @@
 
     <!-- SCRIPTS DE EDICIÓN Y EXPORTACIÓN -->
     <script>
-        // Función para cambiar imágenes al hacer clic
         function cambiarFondo(elemento) {
             let url = prompt("Escribe el nombre del archivo de tu foto (ej: foto.jpg) o pega un enlace de internet:");
             if (url && url.trim() !== "") {
@@ -254,7 +319,6 @@
             }
         }
 
-        // Función para descargar la web final limpia
         function descargarWebFinal() {
             let clon = document.documentElement.cloneNode(true);
             
@@ -265,7 +329,7 @@
             // 2. Quitar el margen superior que dejaba la barra
             clon.querySelector('header').style.marginTop = "0";
 
-            // 3. Quitar todos los atributos "contenteditable" para que ya no sea modificable
+            // 3. Quitar todos los atributos "contenteditable"
             let editables = clon.querySelectorAll('[contenteditable]');
             editables.forEach(el => {
                 el.removeAttribute('contenteditable');
@@ -288,7 +352,7 @@
             let blob = new Blob([htmlFinal], {type: "text/html;charset=utf-8"});
             let enlace = document.createElement("a");
             enlace.href = URL.createObjectURL(blob);
-            enlace.download = "index.html"; // Listo para Github
+            enlace.download = "index.html"; 
             enlace.click();
         }
     </script>
