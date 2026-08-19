@@ -4,252 +4,292 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aurumsys - Ingeniería y Control</title>
-    <style id="estilos-base">
-        /* Diseño General */
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; height: 100vh; background-color: #f4f4f9; overflow: hidden; }
+    <style>
+        /* Diseño General y Variables */
+        :root {
+            --dorado: #d4af37;
+            --oscuro: #0f172a;
+            --texto: #475569;
+            --fondo: #ffffff;
+        }
 
-        /* Panel de Edición (Izquierdo) - Modo Oscuro */
-        #panel-control { width: 380px; background-color: #202020; color: #e0e0e0; padding: 20px; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.5); z-index: 10; font-size: 14px; }
-        #panel-control h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid #404040; padding-bottom: 10px; color: #ffffff; }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--fondo); 
+            color: var(--oscuro);
+            overflow-x: hidden;
+        }
+
+        /* ----- ANIMACIONES ----- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animado {
+            animation: fadeUp 1s ease forwards;
+            opacity: 0; /* Empieza invisible para la animación */
+        }
         
-        .seccion-editor { margin-bottom: 25px; }
-        .seccion-editor h3 { margin-top: 0; font-size: 1rem; color: #a9b0b7; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .seccion-editor label { display: block; font-size: 0.9rem; color: #cfcfcf; margin-bottom: 5px; }
-        .seccion-editor input, .seccion-editor textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #404040; border-radius: 4px; background: #2d2d2d; color: white; margin-bottom: 15px; font-family: inherit; }
-        .seccion-editor input:focus, .seccion-editor textarea:focus { outline: none; border-color: #d4af37; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
 
-        /* Área de la Web (Derecho - Fondo Blanco Excelencia) */
-        #web-preview { flex-grow: 1; background-color: #ffffff; overflow-y: auto; color: #0f172a; position: relative; }
+        /* ----- MODO EDICIÓN ----- */
+        .editable {
+            transition: all 0.2s;
+            outline: none;
+            border: 1px dashed transparent;
+            border-radius: 4px;
+        }
+        .editable:hover, .editable:focus {
+            border: 1px dashed var(--dorado);
+            background-color: rgba(212, 175, 55, 0.05);
+            cursor: text;
+        }
 
-        /* Cabecera y Menú */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: white; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
-        .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: #000; }
-        .logo-icon { width: 35px; height: 35px; border: 2px solid #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+        .img-editable {
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .img-editable:hover {
+            transform: scale(1.02);
+        }
+        .img-editable::after {
+            content: "📸 Clic para cambiar foto";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .img-editable:hover::after {
+            opacity: 1;
+        }
+
+        /* Barra Flotante de Herramientas */
+        #editor-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        #editor-toolbar button {
+            background: var(--dorado);
+            color: black;
+            border: none;
+            padding: 10px 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #editor-toolbar button:hover { transform: scale(1.05); }
+
+        /* ----- ESTRUCTURA DE LA WEB ----- */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 50px; border-bottom: 1px solid #e2e8f0; 
+            margin-top: 50px; /* Espacio para la barra de herramientas */
+        }
+        .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; }
+        .logo-icon { width: 35px; height: 35px; border: 2px solid var(--oscuro); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
         
         nav { display: flex; gap: 30px; }
-        nav a { color: #000; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        nav span { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px; }
 
         /* Hero Section */
-        .hero { position: relative; padding: 120px 50px; text-align: left; background-color: #f8fafc; background-size: cover; background-position: center; border-bottom: 1px solid #e2e8f0; }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85); z-index: 1; }
+        .hero { position: relative; padding: 120px 50px; text-align: left; background-color: #f8fafc; }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('Screenshot_20260818_190327_Instagram.jpg');
+            background-size: cover; background-position: center;
+            opacity: 0.15; z-index: 0;
+        }
         .hero-content { position: relative; z-index: 2; max-width: 800px; }
-        
-        .hero-title { font-weight: 800; margin: 0 0 20px 0; color: #0f172a; line-height: 1.1; font-size: 3.5rem; }
-        .hero-title span { color: #d4af37; }
-        .hero-subtitle { font-size: 1.2rem; color: #475569; margin-bottom: 30px; line-height: 1.6; }
-        .hero-btn { display: inline-block; background: #000; color: #fff; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .hero-title { font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; font-size: 4rem; }
+        .hero-title span.acento { color: var(--dorado); }
+        .hero-subtitle { font-size: 1.3rem; color: var(--texto); margin-bottom: 30px; line-height: 1.6; }
+        .hero-btn { display: inline-block; background: var(--oscuro); color: #fff; padding: 15px 35px; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Grilla de Proyectos */
-        .contenedor-proyectos { padding: 60px 50px; background: #fff; }
-        .titulo-seccion { text-align: center; font-size: 32px; font-weight: 800; margin: 0 0 50px 0; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        /* Proyectos */
+        .proyectos { padding: 80px 50px; }
+        .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
         
-        .tarjeta { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .tarjeta-img { width: 100%; height: 220px; background-color: #f1f5f9; background-size: cover; background-position: center; }
-        .tarjeta-cuerpo { padding: 25px; }
-        .tarjeta-cuerpo h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; }
-        .tarjeta-cuerpo p { margin: 0; color: #64748b; font-size: 14px; line-height: 1.6; }
+        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; }
+        .tarjeta:hover { transform: translateY(-10px); }
+        
+        .tarjeta-img { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #eee; }
+        .tarjeta-cuerpo { padding: 30px; }
+        .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 22px; font-weight: 700; }
+        .tarjeta-cuerpo p { margin: 0; color: var(--texto); font-size: 15px; line-height: 1.6; }
+
+        /* Contacto / Footer */
+        .contacto { background: var(--oscuro); color: white; padding: 60px 50px; text-align: center; }
+        .contacto h2 { color: var(--dorado); margin-top: 0; }
+        .datos-contacto { display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap; }
+        .dato { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .dato strong { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
+        .dato span { font-size: 18px; }
+
     </style>
 </head>
 <body>
 
-    <!-- PANEL DE CONTROL IZQUIERDO -->
-    <div id="panel-control">
-        <h2>Panel de Configuración</h2>
-
-        <div class="seccion-editor">
-            <h3>1. Logo y Menú</h3>
-            <label>Logo (Letra):</label><input type="text" id="edit-icono" value="A" maxlength="1">
-            <label>Nombre Empresa:</label><input type="text" id="edit-nombre" value="AURUMSYS">
-            <label>Botones Menú (separados por coma):</label>
-            <input type="text" id="edit-menu" value="SERVICIOS, PROYECTOS, LA EMPRESA, CONTACTO">
-        </div>
-
-        <div class="seccion-editor">
-            <h3>2. Estilos Globales</h3>
-            <label>Tamaño Título Principal (rem)</label>
-            <input type="number" id="edit-size-tit" step="0.1" value="3.5">
-        </div>
-
-        <div class="seccion-editor">
-            <h3>3. CONTENIDO (TEXTOS)</h3>
-            <label>Título Principal</label>
-            <input type="text" id="edit-hero-tit1" value="Ingeniería Avanzada en">
-            <label>Palabra Destacada (Acento)</label>
-            <input type="text" id="edit-hero-tit2" value="Automatización">
-            <label>Subtítulo</label>
-            <textarea id="edit-hero-sub" rows="4">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</textarea>
-            <label>Texto del Botón</label>
-            <input type="text" id="edit-hero-btn" value="COTIZAR PROYECTO">
-        </div>
-
-        <div class="seccion-editor">
-            <h3>4. FOTOGRAFÍAS (URLS O NOMBRES DE ARCHIVO)</h3>
-            <label>Imagen Principal (Hero)</label>
-            <input type="text" id="edit-img-hero" value="Screenshot_20260818_190327_Instagram.jpg">
-            <label>Proyecto 1 (Tablero)</label>
-            <input type="text" id="edit-img-p1" value="Screenshot_20260818_184949_Instagram.jpg">
-            <label>Proyecto 2 (Caja)</label>
-            <input type="text" id="edit-img-p2" value="Screenshot_20260818_190352_Instagram.jpg">
-            <label>Proyecto 3 (Placa)</label>
-            <input type="text" id="edit-img-p3" value="Screenshot_20260818_190410_Instagram.jpg">
-        </div>
-
-        <div class="seccion-editor">
-            <h3>5. Textos de Proyectos</h3>
-            <label>Título Proy. 1:</label><input type="text" id="edit-tit1" value="Armarios de Control">
-            <label>Desc. Proy. 1:</label><input type="text" id="edit-desc1" value="Integración de PLCs y lógica de control industrial a medida.">
-            <label>Título Proy. 2:</label><input type="text" id="edit-tit2" value="Junction Boxes">
-            <label>Desc. Proy. 2:</label><input type="text" id="edit-desc2" value="Instalación de sistemas de pesaje y celdas de carga.">
-            <label>Título Proy. 3:</label><input type="text" id="edit-tit3" value="Desarrollo IoT">
-            <label>Desc. Proy. 3:</label><input type="text" id="edit-desc3" value="Diseño de placas PCB y sistemas embebidos globales.">
-        </div>
-
-        <!-- BOTÓN DE GUARDADO FINAL -->
-        <div class="seccion-editor" style="background: #2c2c2c; border-left: 4px solid #d4af37;">
-            <h3 style="color: #fff;">💾 GUARDAR DISEÑO</h3>
-            <p style="font-size: 12px; color: #a9b0b7;">Descarga tu web limpia (sin este menú negro) lista para clientes.</p>
-            <button onclick="descargarWeb()" style="width: 100%; padding: 12px; background: #d4af37; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">DESCARGAR WEB FINAL</button>
-        </div>
+    <!-- BARRA DE EDICIÓN -->
+    <div id="editor-toolbar" data-html2canvas-ignore="true">
+        <span>🛠️ <strong>MODO EDICIÓN:</strong> Haz clic en cualquier texto para cambiarlo. Clic en las fotos para cargar las tuyas.</span>
+        <button onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
     </div>
 
-    <!-- PREVISUALIZACIÓN DE LA WEB DERECHA -->
-    <div id="web-preview">
+    <!-- CABECERA -->
+    <header class="animado">
+        <div class="logo-container">
+            <div class="logo-icon editable" contenteditable="true">A</div>
+            <span class="editable" contenteditable="true">AURUMSYS</span>
+        </div>
+        <nav>
+            <span class="editable" contenteditable="true">Servicios</span>
+            <span class="editable" contenteditable="true">Proyectos</span>
+            <span class="editable" contenteditable="true">La Empresa</span>
+            <span class="editable" contenteditable="true">Contacto</span>
+        </nav>
+    </header>
+
+    <!-- HERO (INICIO) -->
+    <section class="hero">
+        <!-- Clic para cambiar el fondo -->
+        <div class="hero-bg img-editable" onclick="cambiarFondo(this)"></div>
         
-        <header>
-            <div class="logo-container">
-                <div class="logo-icon" id="view-icono">A</div>
-                <span id="view-nombre">AURUMSYS</span>
-            </div>
-            <nav id="view-nav">
-                <a href="#">SERVICIOS</a>
-                <a href="#">PROYECTOS</a>
-                <a href="#">LA EMPRESA</a>
-                <a href="#">CONTACTO</a>
-            </nav>
-        </header>
+        <div class="hero-content animado delay-1">
+            <h1 class="hero-title">
+                <span class="editable" contenteditable="true">Ingeniería Avanzada en</span> <br>
+                <span class="acento editable" contenteditable="true">Automatización</span>
+            </h1>
+            <p class="hero-subtitle editable" contenteditable="true">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</p>
+            <div class="hero-btn editable" contenteditable="true">COTIZAR PROYECTO</div>
+        </div>
+    </section>
 
-        <section class="hero" id="view-hero-bg">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title" id="view-hero-title-container">
-                    <span id="view-hero-tit1" style="color: inherit;">Ingeniería Avanzada en</span> 
-                    <br>
-                    <span id="view-hero-tit2">Automatización</span>
-                </h1>
-                <p class="hero-subtitle" id="view-hero-sub">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</p>
-                <a href="#" class="hero-btn" id="view-hero-btn">COTIZAR PROYECTO</a>
-            </div>
-        </section>
-
-        <div class="contenedor-proyectos">
-            <h2 class="titulo-seccion">Proyectos Destacados</h2>
-            <div class="grid">
-                <div class="tarjeta">
-                    <div class="tarjeta-img" id="view-img-p1" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');"></div>
-                    <div class="tarjeta-cuerpo">
-                        <h3 id="view-tit1">Armarios de Control</h3>
-                        <p id="view-desc1">Integración de PLCs y lógica de control industrial a medida.</p>
-                    </div>
+    <!-- PROYECTOS DESTACADOS -->
+    <section class="proyectos">
+        <h2 class="titulo-seccion editable animado" contenteditable="true">Proyectos Destacados</h2>
+        
+        <div class="grid">
+            <!-- Tarjeta 1 -->
+            <div class="tarjeta animado delay-1">
+                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Armarios de Control</h3>
+                    <p class="editable" contenteditable="true">Integración de PLCs, trazabilidad de cableado y lógica de control industrial a medida.</p>
                 </div>
+            </div>
 
-                <div class="tarjeta">
-                    <div class="tarjeta-img" id="view-img-p2" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');"></div>
-                    <div class="tarjeta-cuerpo">
-                        <h3 id="view-tit2">Junction Boxes</h3>
-                        <p id="view-desc2">Instalación de sistemas de pesaje y celdas de carga.</p>
-                    </div>
+            <!-- Tarjeta 2 -->
+            <div class="tarjeta animado delay-2">
+                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Sistemas de Pesaje</h3>
+                    <p class="editable" contenteditable="true">Instalación de Junction Boxes, celdas de carga y calibración en silos industriales.</p>
                 </div>
+            </div>
 
-                <div class="tarjeta">
-                    <div class="tarjeta-img" id="view-img-p3" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');"></div>
-                    <div class="tarjeta-cuerpo">
-                        <h3 id="view-tit3">Desarrollo IoT</h3>
-                        <p id="view-desc3">Diseño de placas PCB y sistemas embebidos globales.</p>
-                    </div>
+            <!-- Tarjeta 3 -->
+            <div class="tarjeta animado delay-3">
+                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Desarrollo IoT</h3>
+                    <p class="editable" contenteditable="true">Sistema Sonda-T: Telemetría láser y sistemas embebidos globales con ESP32.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SCRIPT PARA SINCRONIZAR Y DESCARGAR -->
+    <!-- CONTACTO Y FOOTER -->
+    <section class="contacto animado">
+        <h2 class="editable" contenteditable="true">Comencemos tu próximo proyecto</h2>
+        <p class="editable" contenteditable="true">Asesoramiento profesional e integración de tecnología para la industria.</p>
+        
+        <div class="datos-contacto">
+            <div class="dato">
+                <strong class="editable" contenteditable="true">Correo Electrónico</strong>
+                <span class="editable" contenteditable="true">aurum.sysm@gmail.com</span>
+            </div>
+            <div class="dato">
+                <strong class="editable" contenteditable="true">WhatsApp / Teléfono</strong>
+                <span class="editable" contenteditable="true">+56 9 1234 5678</span>
+            </div>
+            <div class="dato">
+                <strong class="editable" contenteditable="true">Instagram</strong>
+                <span class="editable" contenteditable="true">@aurumsys</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCRIPTS DE EDICIÓN Y EXPORTACIÓN -->
     <script>
-        function sincronizarTexto(idInput, idVista) {
-            document.getElementById(idInput).addEventListener('input', function(e) {
-                document.getElementById(idVista).innerText = e.target.value;
-            });
+        // Función para cambiar imágenes al hacer clic
+        function cambiarFondo(elemento) {
+            let url = prompt("Escribe el nombre del archivo de tu foto (ej: foto.jpg) o pega un enlace de internet:");
+            if (url && url.trim() !== "") {
+                elemento.style.backgroundImage = `url('${url}')`;
+            }
         }
 
-        function sincronizarImagen(idInput, idVista) {
-            document.getElementById(idInput).addEventListener('input', function(e) {
-                document.getElementById(idVista).style.backgroundImage = `url('${e.target.value}')`;
-            });
-        }
-
-        sincronizarTexto('edit-icono', 'view-icono');
-        sincronizarTexto('edit-nombre', 'view-nombre');
-        
-        document.getElementById('edit-menu').addEventListener('input', function(e) {
-            const links = e.target.value.split(',');
-            const nav = document.getElementById('view-nav');
-            nav.innerHTML = '';
-            links.forEach(link => {
-                if(link.trim() !== '') {
-                    const a = document.createElement('a');
-                    a.href = "#";
-                    a.innerText = link.trim();
-                    nav.appendChild(a);
-                }
-            });
-        });
-
-        document.getElementById('edit-size-tit').addEventListener('input', function(e) {
-            document.getElementById('view-hero-title-container').style.fontSize = `${e.target.value}rem`;
-        });
-
-        sincronizarTexto('edit-hero-tit1', 'view-hero-tit1');
-        sincronizarTexto('edit-hero-tit2', 'view-hero-tit2');
-        sincronizarTexto('edit-hero-sub', 'view-hero-sub');
-        sincronizarTexto('edit-hero-btn', 'view-hero-btn');
-
-        sincronizarImagen('edit-img-hero', 'view-hero-bg');
-        sincronizarImagen('edit-img-p1', 'view-img-p1');
-        sincronizarImagen('edit-img-p2', 'view-img-p2');
-        sincronizarImagen('edit-img-p3', 'view-img-p3');
-        document.getElementById('view-hero-bg').style.backgroundImage = `url('${document.getElementById('edit-img-hero').value}')`;
-
-        sincronizarTexto('edit-tit1', 'view-tit1');
-        sincronizarTexto('edit-desc1', 'view-desc1');
-        sincronizarTexto('edit-tit2', 'view-tit2');
-        sincronizarTexto('edit-desc2', 'view-desc2');
-        sincronizarTexto('edit-tit3', 'view-tit3');
-        sincronizarTexto('edit-desc3', 'view-desc3');
-
-        // FUNCIÓN PARA EXPORTAR LA WEB LIMPIA
-        function descargarWeb() {
+        // Función para descargar la web final limpia
+        function descargarWebFinal() {
             let clon = document.documentElement.cloneNode(true);
             
-            // Reemplazar todo el contenido por solo la web (sin panel)
-            let preview = clon.querySelector('#web-preview');
-            let body = clon.querySelector('body');
-            body.innerHTML = preview.innerHTML;
-            
-            // Ajustar el CSS para que la web descargada scrollee normal
-            let nuevoEstilo = clon.createElement('style');
-            nuevoEstilo.innerHTML = "body { display: block !important; height: auto !important; background-color: #fff !important; overflow-y: auto !important; }";
-            clon.querySelector('head').appendChild(nuevoEstilo);
-            
-            // Eliminar los scripts del editor
+            // 1. Quitar la barra de herramientas negra
+            let toolbar = clon.querySelector('#editor-toolbar');
+            if(toolbar) toolbar.remove();
+
+            // 2. Quitar el margen superior que dejaba la barra
+            clon.querySelector('header').style.marginTop = "0";
+
+            // 3. Quitar todos los atributos "contenteditable" para que ya no sea modificable
+            let editables = clon.querySelectorAll('[contenteditable]');
+            editables.forEach(el => {
+                el.removeAttribute('contenteditable');
+                el.classList.remove('editable');
+            });
+
+            // 4. Quitar la funcionalidad de hacer clic en las imágenes
+            let imagenes = clon.querySelectorAll('.img-editable');
+            imagenes.forEach(img => {
+                img.removeAttribute('onclick');
+                img.classList.remove('img-editable');
+            });
+
+            // 5. Borrar este script para que el archivo final sea liviano
             let scripts = clon.querySelectorAll('script');
             scripts.forEach(s => s.remove());
 
-            // Descargar el archivo
+            // Procesar y Descargar
             let htmlFinal = "<!DOCTYPE html>\n" + clon.outerHTML;
             let blob = new Blob([htmlFinal], {type: "text/html;charset=utf-8"});
-            let a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = "index.html"; // Mismo nombre para subir a Github
-            a.click();
+            let enlace = document.createElement("a");
+            enlace.href = URL.createObjectURL(blob);
+            enlace.download = "index.html"; // Listo para Github
+            enlace.click();
         }
     </script>
 </body>
