@@ -19,6 +19,7 @@
             background-color: var(--fondo); 
             color: var(--oscuro);
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* ----- ANIMACIONES ----- */
@@ -45,7 +46,7 @@
         }
         .editable:hover, .editable:focus {
             border: 1px dashed var(--dorado);
-            background-color: rgba(212, 175, 55, 0.05);
+            background-color: rgba(150, 150, 150, 0.1);
             cursor: text;
         }
 
@@ -58,44 +59,71 @@
             transform: scale(1.02);
         }
         .img-editable::after {
-            content: "📸 Clic para cambiar foto";
+            content: "📁 Clic para subir foto";
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             color: white;
-            padding: 5px 10px;
-            font-size: 12px;
+            padding: 8px 12px;
+            font-size: 13px;
             border-radius: 4px;
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none;
         }
         .img-editable:hover::after {
             opacity: 1;
         }
 
-        /* Barra Flotante de Herramientas */
+        /* Barra Flotante de Herramientas (Ahora con colores) */
         #editor-toolbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: #111;
+            background: #1a1a1a;
             color: white;
-            text-align: center;
-            padding: 12px;
             z-index: 9999;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+        }
+        .toolbar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+        }
+        .toolbar-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
+            padding: 10px;
+            background: #000;
         }
+        .color-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .color-control input[type="color"] {
+            border: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+        
         #editor-toolbar button {
             background: var(--dorado);
             color: black;
             border: none;
-            padding: 10px 24px;
+            padding: 8px 20px;
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
@@ -107,21 +135,20 @@
         header { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 50px; border-bottom: 1px solid #e2e8f0; 
-            margin-top: 50px; /* Espacio para la barra */
-            background: white;
+            margin-top: 100px; /* Espacio para la barra de edición doble */
+            background: var(--fondo);
             position: relative;
             z-index: 100;
         }
-        .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; }
-        .logo-icon { width: 35px; height: 35px; border: 2px solid var(--oscuro); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+        .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: var(--oscuro); }
+        .logo-icon { width: 35px; height: 35px; border: 2px solid var(--dorado); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--dorado); }
         
         /* NAVEGACIÓN Y SUBMENÚS */
         nav { display: flex; gap: 30px; align-items: center; }
         
         .nav-item { position: relative; padding: 15px 0; }
-        .nav-principal { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px; cursor: default; }
+        .nav-principal { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px; cursor: default; color: var(--oscuro); }
         
-        /* Indicador de que tiene submenú */
         .tiene-submenu::after { content: " ▾"; font-size: 12px; color: var(--dorado); }
 
         .submenu {
@@ -130,7 +157,7 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: white;
+            background: var(--fondo);
             min-width: 220px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
@@ -153,67 +180,83 @@
             font-size: 14px;
             color: var(--texto);
             font-weight: 500;
-            text-transform: none;
-            letter-spacing: 0;
-        }
-        .submenu-item.editable:hover, .submenu-item.editable:focus {
-            background-color: rgba(212, 175, 55, 0.05);
-            color: var(--oscuro);
         }
 
         /* Hero Section */
-        .hero { position: relative; padding: 120px 50px; text-align: left; background-color: #f8fafc; }
+        .hero { position: relative; padding: 120px 50px; text-align: left; background-color: var(--fondo); }
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('Screenshot_20260818_190327_Instagram.jpg');
+            background-color: #f1f5f9;
             background-size: cover; background-position: center;
-            opacity: 0.15; z-index: 0;
+            opacity: 0.2; z-index: 0;
         }
         .hero-content { position: relative; z-index: 2; max-width: 800px; }
-        .hero-title { font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; font-size: 4rem; }
+        .hero-title { font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; font-size: 4rem; color: var(--oscuro); }
         .hero-title span.acento { color: var(--dorado); }
         .hero-subtitle { font-size: 1.3rem; color: var(--texto); margin-bottom: 30px; line-height: 1.6; }
-        .hero-btn { display: inline-block; background: var(--oscuro); color: #fff; padding: 15px 35px; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .hero-btn { display: inline-block; background: var(--oscuro); color: var(--fondo); padding: 15px 35px; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Proyectos */
-        .proyectos { padding: 80px 50px; }
-        .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; }
+        .proyectos { padding: 80px 50px; background-color: var(--fondo); }
+        .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; color: var(--oscuro); }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
         
-        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; background: white; }
+        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; background: var(--fondo); }
         .tarjeta:hover { transform: translateY(-10px); }
         
-        .tarjeta-img { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #eee; }
+        .tarjeta-img { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #e2e8f0; }
         .tarjeta-cuerpo { padding: 30px; }
-        .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 22px; font-weight: 700; }
+        .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: var(--oscuro); }
         .tarjeta-cuerpo p { margin: 0; color: var(--texto); font-size: 15px; line-height: 1.6; }
 
         /* Contacto / Footer */
-        .contacto { background: var(--oscuro); color: white; padding: 60px 50px; text-align: center; }
-        .contacto h2 { color: var(--dorado); margin-top: 0; }
+        .contacto { background: var(--oscuro); color: var(--fondo); padding: 60px 50px; text-align: center; }
+        .contacto h2 { color: var(--dorado); margin-top: 0; font-size: 30px; }
+        .contacto p { color: #cbd5e1; }
         .datos-contacto { display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap; }
         .dato { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .dato strong { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
+        .dato strong { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--dorado); }
         .dato span { font-size: 18px; }
 
     </style>
 </head>
 <body>
 
-    <!-- BARRA DE EDICIÓN -->
+    <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
-        <span>🛠️ <strong>MODO EDICIÓN:</strong> Haz clic en cualquier texto para cambiarlo (¡incluso en los submenús al pasar el mouse!).</span>
-        <button onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
+        <div class="toolbar-top">
+            <span>🛠️ <strong>MODO EDICIÓN:</strong> Clic en textos para modificar. Clic en los cuadros grises para cargar tu imagen desde el PC.</span>
+            <button onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
+        </div>
+        <div class="toolbar-bottom">
+            <span style="font-weight: bold; color: #a9b0b7;">Tus Colores:</span>
+            <div class="color-control">
+                <label>Acento/Dorado:</label>
+                <input type="color" id="color-dorado" value="#d4af37" onchange="cambiarColor('--dorado', this.value)">
+            </div>
+            <div class="color-control">
+                <label>Oscuro (Botones/Títulos):</label>
+                <input type="color" id="color-oscuro" value="#0f172a" onchange="cambiarColor('--oscuro', this.value)">
+            </div>
+            <div class="color-control">
+                <label>Texto Secundario:</label>
+                <input type="color" id="color-texto" value="#475569" onchange="cambiarColor('--texto', this.value)">
+            </div>
+            <div class="color-control">
+                <label>Fondo de la Web:</label>
+                <input type="color" id="color-fondo" value="#ffffff" onchange="cambiarColor('--fondo', this.value)">
+            </div>
+        </div>
     </div>
 
-    <!-- CABECERA CON SUBMENÚS -->
+    <!-- CABECERA CON 4 SUBMENÚS -->
     <header class="animado">
         <div class="logo-container">
             <div class="logo-icon editable" contenteditable="true">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
         <nav>
-            <!-- Opción con Submenú 1 -->
+            <!-- Servicios -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Servicios</span>
                 <div class="submenu">
@@ -223,7 +266,7 @@
                 </div>
             </div>
 
-            <!-- Opción con Submenú 2 -->
+            <!-- Proyectos -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Proyectos</span>
                 <div class="submenu">
@@ -233,21 +276,32 @@
                 </div>
             </div>
 
-            <!-- Opción Simple -->
+            <!-- La Empresa (Añadido Submenú) -->
             <div class="nav-item">
-                <span class="nav-principal editable" contenteditable="true">La Empresa</span>
+                <span class="nav-principal tiene-submenu editable" contenteditable="true">La Empresa</span>
+                <div class="submenu">
+                    <span class="submenu-item editable" contenteditable="true">Nuestra Historia</span>
+                    <span class="submenu-item editable" contenteditable="true">Misión y Valores</span>
+                    <span class="submenu-item editable" contenteditable="true">Equipo de Ingeniería</span>
+                </div>
             </div>
 
-            <!-- Opción Simple -->
+            <!-- Contacto (Añadido Submenú) -->
             <div class="nav-item">
-                <span class="nav-principal editable" contenteditable="true">Contacto</span>
+                <span class="nav-principal tiene-submenu editable" contenteditable="true">Contacto</span>
+                <div class="submenu">
+                    <span class="submenu-item editable" contenteditable="true">Cotizar un Proyecto</span>
+                    <span class="submenu-item editable" contenteditable="true">Soporte Técnico</span>
+                    <span class="submenu-item editable" contenteditable="true">Nuestra Ubicación</span>
+                </div>
             </div>
         </nav>
     </header>
 
     <!-- HERO (INICIO) -->
     <section class="hero">
-        <div class="hero-bg img-editable" onclick="cambiarFondo(this)"></div>
+        <!-- Imagen de Fondo Cargable -->
+        <div class="hero-bg img-editable" onclick="subirImagenLocal(this)"></div>
         <div class="hero-content animado delay-1">
             <h1 class="hero-title">
                 <span class="editable" contenteditable="true">Ingeniería Avanzada en</span> <br>
@@ -264,7 +318,8 @@
         
         <div class="grid">
             <div class="tarjeta animado delay-1">
-                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_184949_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <!-- Imagen Cargable -->
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Armarios de Control</h3>
                     <p class="editable" contenteditable="true">Integración de PLCs, trazabilidad de cableado y lógica de control industrial a medida.</p>
@@ -272,7 +327,8 @@
             </div>
 
             <div class="tarjeta animado delay-2">
-                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190352_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <!-- Imagen Cargable -->
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Sistemas de Pesaje</h3>
                     <p class="editable" contenteditable="true">Instalación de Junction Boxes, celdas de carga y calibración en silos industriales.</p>
@@ -280,7 +336,8 @@
             </div>
 
             <div class="tarjeta animado delay-3">
-                <div class="tarjeta-img img-editable" style="background-image: url('Screenshot_20260818_190410_Instagram.jpg');" onclick="cambiarFondo(this)"></div>
+                <!-- Imagen Cargable -->
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Desarrollo IoT</h3>
                     <p class="editable" contenteditable="true">Sistema Sonda-T: Telemetría láser y sistemas embebidos globales con ESP32.</p>
@@ -312,11 +369,31 @@
 
     <!-- SCRIPTS DE EDICIÓN Y EXPORTACIÓN -->
     <script>
-        function cambiarFondo(elemento) {
-            let url = prompt("Escribe el nombre del archivo de tu foto (ej: foto.jpg) o pega un enlace de internet:");
-            if (url && url.trim() !== "") {
-                elemento.style.backgroundImage = `url('${url}')`;
-            }
+        // Función para cambiar colores en tiempo real
+        function cambiarColor(variable, valor) {
+            document.documentElement.style.setProperty(variable, valor);
+        }
+
+        // Función para abrir explorador de archivos y cargar imagen directamente
+        function subirImagenLocal(elemento) {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*'; // Solo permite seleccionar imágenes
+            
+            input.onchange = function(e) {
+                let archivo = e.target.files[0];
+                if (archivo) {
+                    let lector = new FileReader();
+                    lector.onload = function(event) {
+                        // El resultado se convierte en código base64 y se pega directo como fondo
+                        elemento.style.backgroundImage = `url('${event.target.result}')`;
+                    };
+                    lector.readAsDataURL(archivo);
+                }
+            };
+            
+            // Simular el clic para que se abra la ventana de Windows/Mac
+            input.click();
         }
 
         function descargarWebFinal() {
@@ -329,21 +406,34 @@
             // 2. Quitar el margen superior que dejaba la barra
             clon.querySelector('header').style.marginTop = "0";
 
-            // 3. Quitar todos los atributos "contenteditable"
+            // 3. Capturar los colores seleccionados y forzarlos en el archivo final
+            let coloresPersonalizados = `
+                :root {
+                    --dorado: ${document.getElementById('color-dorado').value};
+                    --oscuro: ${document.getElementById('color-oscuro').value};
+                    --texto: ${document.getElementById('color-texto').value};
+                    --fondo: ${document.getElementById('color-fondo').value};
+                }
+            `;
+            let styleTag = clon.createElement('style');
+            styleTag.innerHTML = coloresPersonalizados;
+            clon.querySelector('head').appendChild(styleTag);
+
+            // 4. Quitar todos los atributos "contenteditable"
             let editables = clon.querySelectorAll('[contenteditable]');
             editables.forEach(el => {
                 el.removeAttribute('contenteditable');
                 el.classList.remove('editable');
             });
 
-            // 4. Quitar la funcionalidad de hacer clic en las imágenes
+            // 5. Quitar la funcionalidad de hacer clic en las imágenes
             let imagenes = clon.querySelectorAll('.img-editable');
             imagenes.forEach(img => {
                 img.removeAttribute('onclick');
                 img.classList.remove('img-editable');
             });
 
-            // 5. Borrar este script para que el archivo final sea liviano
+            // 6. Borrar este script para que el archivo final sea liviano
             let scripts = clon.querySelectorAll('script');
             scripts.forEach(s => s.remove());
 
