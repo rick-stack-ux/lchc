@@ -76,7 +76,7 @@
             opacity: 1;
         }
 
-        /* Barra Flotante de Herramientas (Ahora con colores) */
+        /* Barra Flotante de Herramientas */
         #editor-toolbar {
             position: fixed;
             top: 0;
@@ -119,7 +119,7 @@
             background: none;
         }
         
-        #editor-toolbar button {
+        #btn-descargar {
             background: var(--dorado);
             color: black;
             border: none;
@@ -129,13 +129,13 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        #editor-toolbar button:hover { transform: scale(1.05); }
+        #btn-descargar:hover { transform: scale(1.05); }
 
         /* ----- ESTRUCTURA DE LA WEB ----- */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 50px; border-bottom: 1px solid #e2e8f0; 
-            margin-top: 100px; /* Espacio para la barra de edición doble */
+            margin-top: 100px; 
             background: var(--fondo);
             position: relative;
             z-index: 100;
@@ -225,17 +225,17 @@
     <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
         <div class="toolbar-top">
-            <span>🛠️ <strong>MODO EDICIÓN:</strong> Clic en textos para modificar. Clic en los cuadros grises para cargar tu imagen desde el PC.</span>
-            <button onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
+            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> No cierres ni recargues esta pestaña hasta descargar el archivo.</span>
+            <button id="btn-descargar" onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
         </div>
         <div class="toolbar-bottom">
-            <span style="font-weight: bold; color: #a9b0b7;">Tus Colores:</span>
+            <span style="font-weight: bold; color: #a9b0b7;">Colores:</span>
             <div class="color-control">
                 <label>Acento/Dorado:</label>
                 <input type="color" id="color-dorado" value="#d4af37" onchange="cambiarColor('--dorado', this.value)">
             </div>
             <div class="color-control">
-                <label>Oscuro (Botones/Títulos):</label>
+                <label>Oscuro:</label>
                 <input type="color" id="color-oscuro" value="#0f172a" onchange="cambiarColor('--oscuro', this.value)">
             </div>
             <div class="color-control">
@@ -243,20 +243,19 @@
                 <input type="color" id="color-texto" value="#475569" onchange="cambiarColor('--texto', this.value)">
             </div>
             <div class="color-control">
-                <label>Fondo de la Web:</label>
+                <label>Fondo:</label>
                 <input type="color" id="color-fondo" value="#ffffff" onchange="cambiarColor('--fondo', this.value)">
             </div>
         </div>
     </div>
 
-    <!-- CABECERA CON 4 SUBMENÚS -->
+    <!-- CABECERA -->
     <header class="animado">
         <div class="logo-container">
             <div class="logo-icon editable" contenteditable="true">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
         <nav>
-            <!-- Servicios -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Servicios</span>
                 <div class="submenu">
@@ -266,7 +265,6 @@
                 </div>
             </div>
 
-            <!-- Proyectos -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Proyectos</span>
                 <div class="submenu">
@@ -276,7 +274,6 @@
                 </div>
             </div>
 
-            <!-- La Empresa (Añadido Submenú) -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">La Empresa</span>
                 <div class="submenu">
@@ -286,7 +283,6 @@
                 </div>
             </div>
 
-            <!-- Contacto (Añadido Submenú) -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Contacto</span>
                 <div class="submenu">
@@ -300,7 +296,6 @@
 
     <!-- HERO (INICIO) -->
     <section class="hero">
-        <!-- Imagen de Fondo Cargable -->
         <div class="hero-bg img-editable" onclick="subirImagenLocal(this)"></div>
         <div class="hero-content animado delay-1">
             <h1 class="hero-title">
@@ -318,7 +313,6 @@
         
         <div class="grid">
             <div class="tarjeta animado delay-1">
-                <!-- Imagen Cargable -->
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Armarios de Control</h3>
@@ -327,7 +321,6 @@
             </div>
 
             <div class="tarjeta animado delay-2">
-                <!-- Imagen Cargable -->
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Sistemas de Pesaje</h3>
@@ -336,7 +329,6 @@
             </div>
 
             <div class="tarjeta animado delay-3">
-                <!-- Imagen Cargable -->
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Desarrollo IoT</h3>
@@ -367,83 +359,111 @@
         </div>
     </section>
 
-    <!-- SCRIPTS DE EDICIÓN Y EXPORTACIÓN -->
+    <!-- SCRIPTS -->
     <script>
-        // Función para cambiar colores en tiempo real
+        // 1. SEGURO ANTI-CIERRE: Evita que el usuario cierre la pestaña accidentalmente
+        let haDescargado = false;
+        window.addEventListener('beforeunload', function (e) {
+            if (!haDescargado) {
+                e.preventDefault();
+                e.returnValue = '¿Estás seguro de salir? Perderás todo el diseño si no lo has descargado.';
+            }
+        });
+
+        // 2. Cambio de colores
         function cambiarColor(variable, valor) {
             document.documentElement.style.setProperty(variable, valor);
         }
 
-        // Función para abrir explorador de archivos y cargar imagen directamente
+        // 3. Subir imágenes
         function subirImagenLocal(elemento) {
             let input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'image/*'; // Solo permite seleccionar imágenes
+            input.accept = 'image/*';
             
             input.onchange = function(e) {
                 let archivo = e.target.files[0];
                 if (archivo) {
                     let lector = new FileReader();
                     lector.onload = function(event) {
-                        // El resultado se convierte en código base64 y se pega directo como fondo
                         elemento.style.backgroundImage = `url('${event.target.result}')`;
                     };
                     lector.readAsDataURL(archivo);
                 }
             };
-            
-            // Simular el clic para que se abra la ventana de Windows/Mac
             input.click();
         }
 
+        // 4. Exportar y Descargar Seguro
         function descargarWebFinal() {
-            let clon = document.documentElement.cloneNode(true);
+            // Notificar al usuario que está procesando
+            alert("Generando tu archivo web. Si subiste fotos muy pesadas, el navegador puede tardar unos segundos. Presiona Aceptar para continuar.");
             
-            // 1. Quitar la barra de herramientas negra
-            let toolbar = clon.querySelector('#editor-toolbar');
-            if(toolbar) toolbar.remove();
+            let boton = document.getElementById('btn-descargar');
+            boton.innerText = "⏳ PROCESANDO...";
+            boton.style.background = "#fff";
 
-            // 2. Quitar el margen superior que dejaba la barra
-            clon.querySelector('header').style.marginTop = "0";
+            // Se usa setTimeout para permitir que el navegador actualice el texto del botón antes de congelarse clonando
+            setTimeout(() => {
+                try {
+                    let clon = document.documentElement.cloneNode(true);
+                    
+                    // Limpieza
+                    let toolbar = clon.querySelector('#editor-toolbar');
+                    if(toolbar) toolbar.remove();
 
-            // 3. Capturar los colores seleccionados y forzarlos en el archivo final
-            let coloresPersonalizados = `
-                :root {
-                    --dorado: ${document.getElementById('color-dorado').value};
-                    --oscuro: ${document.getElementById('color-oscuro').value};
-                    --texto: ${document.getElementById('color-texto').value};
-                    --fondo: ${document.getElementById('color-fondo').value};
+                    clon.querySelector('header').style.marginTop = "0";
+
+                    let coloresPersonalizados = `
+                        :root {
+                            --dorado: ${document.getElementById('color-dorado').value};
+                            --oscuro: ${document.getElementById('color-oscuro').value};
+                            --texto: ${document.getElementById('color-texto').value};
+                            --fondo: ${document.getElementById('color-fondo').value};
+                        }
+                    `;
+                    let styleTag = clon.createElement('style');
+                    styleTag.innerHTML = coloresPersonalizados;
+                    clon.querySelector('head').appendChild(styleTag);
+
+                    let editables = clon.querySelectorAll('[contenteditable]');
+                    editables.forEach(el => {
+                        el.removeAttribute('contenteditable');
+                        el.classList.remove('editable');
+                    });
+
+                    let imagenes = clon.querySelectorAll('.img-editable');
+                    imagenes.forEach(img => {
+                        img.removeAttribute('onclick');
+                        img.classList.remove('img-editable');
+                    });
+
+                    let scripts = clon.querySelectorAll('script');
+                    scripts.forEach(s => s.remove());
+
+                    let htmlFinal = "<!DOCTYPE html>\n" + clon.outerHTML;
+                    let blob = new Blob([htmlFinal], {type: "text/html;charset=utf-8"});
+                    let enlace = document.createElement("a");
+                    enlace.href = URL.createObjectURL(blob);
+                    enlace.download = "index.html"; 
+                    
+                    // Apagar el seguro anti-cierre temporalmente
+                    haDescargado = true;
+                    
+                    enlace.click();
+                    
+                    boton.innerText = "✅ DESCARGADO";
+                    boton.style.background = "#4CAF50";
+                    
+                    // Restaurar el seguro por si el usuario sigue editando
+                    setTimeout(() => { haDescargado = false; boton.innerText = "💾 DESCARGAR WEB FINAL"; boton.style.background = "var(--dorado)"; }, 3000);
+
+                } catch (error) {
+                    alert("Ocurrió un error al procesar las imágenes. Intenta subir fotos menos pesadas.");
+                    boton.innerText = "❌ ERROR - INTENTA DE NUEVO";
+                    boton.style.background = "#f44336";
                 }
-            `;
-            let styleTag = clon.createElement('style');
-            styleTag.innerHTML = coloresPersonalizados;
-            clon.querySelector('head').appendChild(styleTag);
-
-            // 4. Quitar todos los atributos "contenteditable"
-            let editables = clon.querySelectorAll('[contenteditable]');
-            editables.forEach(el => {
-                el.removeAttribute('contenteditable');
-                el.classList.remove('editable');
-            });
-
-            // 5. Quitar la funcionalidad de hacer clic en las imágenes
-            let imagenes = clon.querySelectorAll('.img-editable');
-            imagenes.forEach(img => {
-                img.removeAttribute('onclick');
-                img.classList.remove('img-editable');
-            });
-
-            // 6. Borrar este script para que el archivo final sea liviano
-            let scripts = clon.querySelectorAll('script');
-            scripts.forEach(s => s.remove());
-
-            // Procesar y Descargar
-            let htmlFinal = "<!DOCTYPE html>\n" + clon.outerHTML;
-            let blob = new Blob([htmlFinal], {type: "text/html;charset=utf-8"});
-            let enlace = document.createElement("a");
-            enlace.href = URL.createObjectURL(blob);
-            enlace.download = "index.html"; 
-            enlace.click();
+            }, 100);
         }
     </script>
 </body>
