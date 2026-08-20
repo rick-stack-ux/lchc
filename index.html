@@ -78,7 +78,6 @@
             opacity: 1;
         }
         
-        /* Tooltip especial para el logo */
         .logo-icon.img-editable::after {
             content: "📸 Logo";
             bottom: -30px;
@@ -251,7 +250,7 @@
     <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
         <div class="toolbar-top">
-            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Auto-compresión de fotos pesadas activada.</span>
+            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Auto-compresión de fotos pesadas activada. Descarga sin errores.</span>
             <button id="btn-descargar" onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
         </div>
         <div class="toolbar-bottom">
@@ -401,7 +400,7 @@
             document.documentElement.style.setProperty(variable, valor);
         }
 
-        // 3. Subir imágenes (Con auto-compresión y reducción inteligente)
+        // 3. Subir imágenes
         function subirImagenLocal(elemento) {
             let input = document.createElement('input');
             input.type = 'file';
@@ -414,17 +413,14 @@
                     lector.onload = function(event) {
                         let img = new Image();
                         img.onload = function() {
-                            // Crear un canvas para redimensionar la imagen
                             let canvas = document.createElement('canvas');
                             let ctx = canvas.getContext('2d');
                             
-                            // Tamaño máximo permitido (para no saturar el HTML final)
                             let MAX_WIDTH = 1200;
                             let MAX_HEIGHT = 1200;
                             let width = img.width;
                             let height = img.height;
                             
-                            // Calcular nuevo tamaño manteniendo proporción
                             if (width > height) {
                                 if (width > MAX_WIDTH) {
                                     height *= MAX_WIDTH / width;
@@ -440,11 +436,9 @@
                             canvas.width = width;
                             canvas.height = height;
                             
-                            // Dibujar y comprimir a calidad media-alta (0.8) en JPEG
                             ctx.drawImage(img, 0, 0, width, height);
                             let dataUrlComprimida = canvas.toDataURL('image/jpeg', 0.8);
                             
-                            // Aplicar imagen optimizada
                             elemento.style.backgroundImage = `url('${dataUrlComprimida}')`;
                             elemento.innerHTML = ''; 
                             elemento.style.border = 'none';
@@ -457,7 +451,7 @@
             input.click();
         }
 
-        // 4. Exportar y Descargar Seguro
+        // 4. Exportar y Descargar Seguro (CORREGIDO)
         function descargarWebFinal() {
             let boton = document.getElementById('btn-descargar');
             boton.innerText = "⏳ PROCESANDO...";
@@ -480,7 +474,9 @@
                             --fondo: ${document.getElementById('color-fondo').value};
                         }
                     `;
-                    let styleTag = clon.createElement('style');
+                    
+                    // CORRECCIÓN DEL ERROR AQUÍ: Se debe usar document.createElement en vez de clon.createElement
+                    let styleTag = document.createElement('style');
                     styleTag.innerHTML = coloresPersonalizados;
                     clon.querySelector('head').appendChild(styleTag);
 
@@ -514,7 +510,7 @@
                     setTimeout(() => { haDescargado = false; boton.innerText = "💾 DESCARGAR WEB FINAL"; boton.style.background = "var(--dorado)"; }, 3000);
 
                 } catch (error) {
-                    alert("Ocurrió un error inesperado al procesar. Intenta nuevamente.");
+                    alert("Ocurrió un error inesperado al procesar. Intenta nuevamente. Error: " + error.message);
                     boton.innerText = "❌ ERROR";
                     boton.style.background = "#f44336";
                 }
