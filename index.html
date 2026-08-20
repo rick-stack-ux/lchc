@@ -71,9 +71,20 @@
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
+            z-index: 10;
+            white-space: nowrap;
         }
         .img-editable:hover::after {
             opacity: 1;
+        }
+        
+        /* Tooltip especial más pequeño para el logo */
+        .logo-icon.img-editable::after {
+            content: "📸 Logo";
+            bottom: -30px;
+            right: -10px;
+            font-size: 11px;
+            padding: 4px 8px;
         }
 
         /* Barra Flotante de Herramientas */
@@ -141,7 +152,23 @@
             z-index: 100;
         }
         .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: var(--oscuro); }
-        .logo-icon { width: 35px; height: 35px; border: 2px solid var(--dorado); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--dorado); }
+        
+        /* Estilos actualizados para soportar imagen de logo */
+        .logo-icon { 
+            width: 50px; 
+            height: 50px; 
+            border: 2px solid var(--dorado); 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 24px; 
+            color: var(--dorado); 
+            background-color: var(--oscuro);
+            background-size: cover;
+            background-position: center;
+            overflow: visible;
+        }
         
         /* NAVEGACIÓN Y SUBMENÚS */
         nav { display: flex; gap: 30px; align-items: center; }
@@ -252,7 +279,8 @@
     <!-- CABECERA -->
     <header class="animado">
         <div class="logo-container">
-            <div class="logo-icon editable" contenteditable="true">A</div>
+            <!-- AQUÍ ESTÁ EL LOGO AHORA CARGABLE -->
+            <div class="logo-icon img-editable" onclick="subirImagenLocal(this)">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
         <nav>
@@ -361,7 +389,7 @@
 
     <!-- SCRIPTS -->
     <script>
-        // 1. SEGURO ANTI-CIERRE: Evita que el usuario cierre la pestaña accidentalmente
+        // 1. SEGURO ANTI-CIERRE
         let haDescargado = false;
         window.addEventListener('beforeunload', function (e) {
             if (!haDescargado) {
@@ -375,7 +403,7 @@
             document.documentElement.style.setProperty(variable, valor);
         }
 
-        // 3. Subir imágenes
+        // 3. Subir imágenes (Ahora borra el texto interior al subir el logo)
         function subirImagenLocal(elemento) {
             let input = document.createElement('input');
             input.type = 'file';
@@ -387,6 +415,8 @@
                     let lector = new FileReader();
                     lector.onload = function(event) {
                         elemento.style.backgroundImage = `url('${event.target.result}')`;
+                        elemento.innerHTML = ''; // Esto borra la letra "A" automáticamente al subir la foto
+                        elemento.style.border = 'none'; // Quita el borde dorado por si tu logo ya lo tiene
                     };
                     lector.readAsDataURL(archivo);
                 }
@@ -396,14 +426,12 @@
 
         // 4. Exportar y Descargar Seguro
         function descargarWebFinal() {
-            // Notificar al usuario que está procesando
             alert("Generando tu archivo web. Si subiste fotos muy pesadas, el navegador puede tardar unos segundos. Presiona Aceptar para continuar.");
             
             let boton = document.getElementById('btn-descargar');
             boton.innerText = "⏳ PROCESANDO...";
             boton.style.background = "#fff";
 
-            // Se usa setTimeout para permitir que el navegador actualice el texto del botón antes de congelarse clonando
             setTimeout(() => {
                 try {
                     let clon = document.documentElement.cloneNode(true);
@@ -447,7 +475,6 @@
                     enlace.href = URL.createObjectURL(blob);
                     enlace.download = "index.html"; 
                     
-                    // Apagar el seguro anti-cierre temporalmente
                     haDescargado = true;
                     
                     enlace.click();
@@ -455,7 +482,6 @@
                     boton.innerText = "✅ DESCARGADO";
                     boton.style.background = "#4CAF50";
                     
-                    // Restaurar el seguro por si el usuario sigue editando
                     setTimeout(() => { haDescargado = false; boton.innerText = "💾 DESCARGAR WEB FINAL"; boton.style.background = "var(--dorado)"; }, 3000);
 
                 } catch (error) {
