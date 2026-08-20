@@ -78,7 +78,7 @@
             opacity: 1;
         }
         
-        /* Tooltip especial más pequeño para el logo */
+        /* Tooltip especial para el logo */
         .logo-icon.img-editable::after {
             content: "📸 Logo";
             bottom: -30px;
@@ -153,7 +153,6 @@
         }
         .logo-container { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: var(--oscuro); }
         
-        /* Estilos actualizados para soportar imagen de logo */
         .logo-icon { 
             width: 50px; 
             height: 50px; 
@@ -252,7 +251,7 @@
     <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
         <div class="toolbar-top">
-            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> No cierres ni recargues esta pestaña hasta descargar el archivo.</span>
+            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Auto-compresión de fotos pesadas activada.</span>
             <button id="btn-descargar" onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
         </div>
         <div class="toolbar-bottom">
@@ -279,7 +278,6 @@
     <!-- CABECERA -->
     <header class="animado">
         <div class="logo-container">
-            <!-- AQUÍ ESTÁ EL LOGO AHORA CARGABLE -->
             <div class="logo-icon img-editable" onclick="subirImagenLocal(this)">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
@@ -403,7 +401,7 @@
             document.documentElement.style.setProperty(variable, valor);
         }
 
-        // 3. Subir imágenes (Ahora borra el texto interior al subir el logo)
+        // 3. Subir imágenes (Con auto-compresión y reducción inteligente)
         function subirImagenLocal(elemento) {
             let input = document.createElement('input');
             input.type = 'file';
@@ -414,9 +412,44 @@
                 if (archivo) {
                     let lector = new FileReader();
                     lector.onload = function(event) {
-                        elemento.style.backgroundImage = `url('${event.target.result}')`;
-                        elemento.innerHTML = ''; // Esto borra la letra "A" automáticamente al subir la foto
-                        elemento.style.border = 'none'; // Quita el borde dorado por si tu logo ya lo tiene
+                        let img = new Image();
+                        img.onload = function() {
+                            // Crear un canvas para redimensionar la imagen
+                            let canvas = document.createElement('canvas');
+                            let ctx = canvas.getContext('2d');
+                            
+                            // Tamaño máximo permitido (para no saturar el HTML final)
+                            let MAX_WIDTH = 1200;
+                            let MAX_HEIGHT = 1200;
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            // Calcular nuevo tamaño manteniendo proporción
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            
+                            // Dibujar y comprimir a calidad media-alta (0.8) en JPEG
+                            ctx.drawImage(img, 0, 0, width, height);
+                            let dataUrlComprimida = canvas.toDataURL('image/jpeg', 0.8);
+                            
+                            // Aplicar imagen optimizada
+                            elemento.style.backgroundImage = `url('${dataUrlComprimida}')`;
+                            elemento.innerHTML = ''; 
+                            elemento.style.border = 'none';
+                        };
+                        img.src = event.target.result;
                     };
                     lector.readAsDataURL(archivo);
                 }
@@ -426,8 +459,6 @@
 
         // 4. Exportar y Descargar Seguro
         function descargarWebFinal() {
-            alert("Generando tu archivo web. Si subiste fotos muy pesadas, el navegador puede tardar unos segundos. Presiona Aceptar para continuar.");
-            
             let boton = document.getElementById('btn-descargar');
             boton.innerText = "⏳ PROCESANDO...";
             boton.style.background = "#fff";
@@ -436,7 +467,6 @@
                 try {
                     let clon = document.documentElement.cloneNode(true);
                     
-                    // Limpieza
                     let toolbar = clon.querySelector('#editor-toolbar');
                     if(toolbar) toolbar.remove();
 
@@ -476,7 +506,6 @@
                     enlace.download = "index.html"; 
                     
                     haDescargado = true;
-                    
                     enlace.click();
                     
                     boton.innerText = "✅ DESCARGADO";
@@ -485,8 +514,8 @@
                     setTimeout(() => { haDescargado = false; boton.innerText = "💾 DESCARGAR WEB FINAL"; boton.style.background = "var(--dorado)"; }, 3000);
 
                 } catch (error) {
-                    alert("Ocurrió un error al procesar las imágenes. Intenta subir fotos menos pesadas.");
-                    boton.innerText = "❌ ERROR - INTENTA DE NUEVO";
+                    alert("Ocurrió un error inesperado al procesar. Intenta nuevamente.");
+                    boton.innerText = "❌ ERROR";
                     boton.style.background = "#f44336";
                 }
             }, 100);
