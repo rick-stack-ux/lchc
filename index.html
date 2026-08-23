@@ -144,7 +144,7 @@
         /* ----- ESTRUCTURA DE LA WEB ----- */
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 50px; border-bottom: 1px solid #e2e8f0; 
+            padding: 20px 50px; border-bottom: 1px solid rgba(255,255,255,0.1); 
             margin-top: 100px; 
             background: var(--fondo);
             position: relative;
@@ -184,8 +184,8 @@
             left: 0;
             background: var(--fondo);
             min-width: 250px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
             padding: 10px 0;
             transition: all 0.3s ease;
@@ -212,9 +212,9 @@
         .hero { position: relative; padding: 120px 50px; text-align: left; background-color: var(--fondo); }
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #f1f5f9;
+            background-color: #111;
             background-size: cover; background-position: center;
-            opacity: 0.2; z-index: 0;
+            opacity: 0.25; z-index: 0;
         }
         .hero-content { position: relative; z-index: 2; max-width: 800px; }
         .hero-title { font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; font-size: 4rem; color: var(--oscuro); }
@@ -223,8 +223,8 @@
         
         /* Contenedor de Botones Hero */
         .hero-botones { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .hero-btn { display: inline-block; background: var(--oscuro); color: var(--fondo); padding: 15px 35px; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
-        .hero-btn:hover { background: var(--dorado); color: var(--oscuro); }
+        .hero-btn { display: inline-block; background: var(--oscuro); color: var(--fondo); padding: 15px 35px; font-weight: bold; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; border: 2px solid var(--oscuro); }
+        .hero-btn:hover { background: transparent; color: var(--dorado); border-color: var(--dorado); }
         
         /* Botón WhatsApp Hero */
         .hero-btn-wsp {
@@ -236,27 +236,30 @@
         .hero-btn-wsp:hover { background: #1ebe5d; transform: scale(1.05); }
         .hero-btn-wsp svg { width: 24px; height: 24px; fill: currentColor; }
 
-        /* Proyectos */
+        /* Proyectos (GRILLA MEJORADA) */
         .proyectos { padding: 80px 50px; background-color: var(--fondo); }
         .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; color: var(--oscuro); }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
         
-        .tarjeta { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; background: var(--fondo); }
-        .tarjeta:hover { transform: translateY(-10px); }
+        /* Grilla flexible que se adapta automáticamente al número de tarjetas */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
         
-        .tarjeta-img { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #e2e8f0; }
+        .tarjeta { border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s; background: var(--fondo); }
+        .tarjeta:hover { transform: translateY(-10px); border-color: var(--dorado); }
+        
+        /* Imagen de tarjeta ampliada a 300px */
+        .tarjeta-img { width: 100%; height: 300px; background-size: cover; background-position: center; background-color: #1a1a1a; }
         .tarjeta-cuerpo { padding: 30px; }
-        .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: var(--oscuro); }
+        .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: var(--oscuro); text-transform: uppercase; }
         .tarjeta-cuerpo p { margin: 0; color: var(--texto); font-size: 15px; line-height: 1.6; }
 
-        /* Contacto / Footer */
-        .contacto { background: var(--oscuro); color: var(--fondo); padding: 60px 50px; text-align: center; }
+        /* Contacto / Footer (FRANJA CORREGIDA) */
+        .contacto { background: transparent; color: var(--oscuro); padding: 60px 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
         .contacto h2 { color: var(--dorado); margin-top: 0; font-size: 30px; }
-        .contacto p { color: #cbd5e1; }
+        .contacto p { color: var(--texto); }
         .datos-contacto { display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap; }
         .dato { display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .dato strong { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--dorado); }
-        .dato span { font-size: 18px; }
+        .dato span { font-size: 18px; color: var(--oscuro); }
 
         /* ----- MODAL COTIZACIÓN ----- */
         .modal-overlay {
@@ -272,6 +275,9 @@
             width: 90%; max-width: 500px;
             position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center; border-top: 4px solid var(--dorado);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .btn-cerrar {
             position: absolute; top: 15px; right: 20px;
@@ -282,18 +288,19 @@
         .form-cotizar { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .form-cotizar input, .form-cotizar textarea {
             width: 100%; padding: 12px; box-sizing: border-box;
-            border: 1px solid #cbd5e1; border-radius: 4px;
-            background: #f8fafc; color: #000; font-family: inherit;
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+            background: transparent; color: var(--oscuro); font-family: inherit;
         }
+        .form-cotizar input::placeholder, .form-cotizar textarea::placeholder { color: var(--texto); opacity: 0.7; }
         .form-cotizar input:focus, .form-cotizar textarea:focus { outline: none; border-color: var(--dorado); }
         .btn-enviar-modal {
-            background: var(--oscuro); color: #fff;
+            background: var(--dorado); color: #000;
             padding: 15px; border: none; border-radius: 4px;
             font-weight: bold; cursor: pointer; transition: 0.3s;
             text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-enviar-modal:hover { background: var(--dorado); color: var(--oscuro); }
-        .modal-redes { margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0; }
+        .btn-enviar-modal:hover { background: #fff; }
+        .modal-redes { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
         .botones-redes { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
         .btn-social {
             text-decoration: none; padding: 10px 20px;
@@ -304,13 +311,21 @@
         .btn-ig { background: #E1306C; } .btn-ig:hover { background: #c1285c; }
 
     </style>
+<style>
+    :root {
+        --dorado: #ff9d4d;
+        --oscuro: #ffffff;
+        --texto: #ffffff;
+        --fondo: #000000;
+    }
+</style>
 </head>
 <body>
 
     <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
         <div class="toolbar-top">
-            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Auto-compresión de fotos activada.</span>
+            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Carga directa PC activada. Grilla de 5 tarjetas responsiva.</span>
             <button id="btn-descargar" onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
         </div>
         <div class="toolbar-bottom">
@@ -320,7 +335,7 @@
                 <input type="color" id="color-dorado" value="#ff9d4d" onchange="cambiarColor('--dorado', this.value)">
             </div>
             <div class="color-control">
-                <label>Oscuro:</label>
+                <label>Oscuro (Texto/Títulos):</label>
                 <input type="color" id="color-oscuro" value="#ffffff" onchange="cambiarColor('--oscuro', this.value)">
             </div>
             <div class="color-control">
@@ -400,38 +415,59 @@
         </div>
     </section>
 
-    <!-- PROYECTOS DESTACADOS -->
+    <!-- PROYECTOS DESTACADOS (AHORA CON 5 TARJETAS Y FOTOS MÁS GRANDES) -->
     <section class="proyectos">
         <h2 class="titulo-seccion editable animado" contenteditable="true">Proyectos Destacados</h2>
         
         <div class="grid">
+            <!-- Tarjeta 1 -->
             <div class="tarjeta animado delay-1">
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
-                    <h3 class="editable" contenteditable="true">Armarios de Control</h3>
+                    <h3 class="editable" contenteditable="true">Desarrollo y Diseño IoT</h3>
+                    <p class="editable" contenteditable="true">Desarrollo de sistemas automatizados IoT, mecatrónica, microcontroladores y diseño de interfaces web a medida.</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="tarjeta animado delay-2">
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Programación (PLC, VDF)</h3>
                     <p class="editable" contenteditable="true">Integración de PLC, trazabilidad de cableado y lógica de control industrial a medida.</p>
                 </div>
             </div>
 
-            <div class="tarjeta animado delay-2">
-                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
-                <div class="tarjeta-cuerpo">
-                    <h3 class="editable" contenteditable="true">Junction Boxes</h3>
-                    <p class="editable" contenteditable="true">Instalación de sistemas de pesaje y celdas de carga.</p>
-                </div>
-            </div>
-
+            <!-- Tarjeta 3 -->
             <div class="tarjeta animado delay-3">
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
-                    <h3 class="editable" contenteditable="true">Desarrollo IoT</h3>
-                    <p class="editable" contenteditable="true">Diseño de placas PCB y sistemas embebidos globales.</p>
+                    <h3 class="editable" contenteditable="true">Diseño Armado (TDA, TDF)</h3>
+                    <p class="editable" contenteditable="true">Diseño de tableros eléctricos de control y fuerza, dibujo técnico bajo norma y certificación SEC.</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 4 (NUEVA) -->
+            <div class="tarjeta animado delay-3">
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Sistemas de Pesaje</h3>
+                    <p class="editable" contenteditable="true">Instalación de Junction Boxes, celdas de carga y calibración en silos industriales.</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 5 (NUEVA) -->
+            <div class="tarjeta animado delay-3">
+                <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="editable" contenteditable="true">Telemetría Sonda-T</h3>
+                    <p class="editable" contenteditable="true">Telemetría láser y sistemas embebidos globales con hardware ESP32 para monitoreo en tiempo real.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACTO Y FOOTER -->
+    <!-- CONTACTO Y FOOTER (FONDO CORREGIDO) -->
     <section class="contacto animado">
         <h2 class="editable" contenteditable="true">Comencemos tu próximo proyecto</h2>
         <p class="editable" contenteditable="true">Asesoramiento profesional e integración de tecnología para la industria.</p>
