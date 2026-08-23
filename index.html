@@ -7,10 +7,10 @@
     <style>
         /* Diseño General y Variables */
         :root {
-            --dorado: #d4af37;
-            --oscuro: #0f172a;
-            --texto: #475569;
-            --fondo: #ffffff;
+            --dorado: #ff9d4d;
+            --oscuro: #ffffff;
+            --texto: #ffffff;
+            --fondo: #000000;
         }
 
         body { 
@@ -304,14 +304,6 @@
         .btn-ig { background: #E1306C; } .btn-ig:hover { background: #c1285c; }
 
     </style>
-<style>
-    :root {
-        --dorado: #ff9d4d;
-        --oscuro: #ffffff;
-        --texto: #ffffff;
-        --fondo: #000000;
-    }
-</style>
 </head>
 <body>
 
@@ -393,7 +385,7 @@
                 <span class="editable" contenteditable="true">Ingeniería Avanzada en</span> <br>
                 <span class="acento editable" contenteditable="true">Automatización</span>
             </h1>
-            <p class="hero-subtitle editable" contenteditable="true">Diseño y desarrollo de proyectos industriales. Optimizamos sus processes con eficiencia, productividad y sistemas de alta precisión.</p>
+            <p class="hero-subtitle editable" contenteditable="true">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</p>
             
             <!-- CONTENEDOR DE BOTONES (COTIZAR + WHATSAPP) -->
             <div class="hero-botones">
@@ -620,7 +612,7 @@
                     let oldScripts = clon.querySelectorAll('script');
                     oldScripts.forEach(s => s.remove());
 
-                    let scriptFinal = clon.createElement('script');
+                    let scriptFinal = document.createElement('script');
                     scriptFinal.innerHTML = `
                         function abrirModal() { document.getElementById('modal-cotizacion').style.display = 'flex'; }
                         function cerrarModal() { document.getElementById('modal-cotizacion').style.display = 'none'; }
