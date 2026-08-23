@@ -7,10 +7,10 @@
     <style>
         /* Diseño General y Variables */
         :root {
-            --dorado: #ff9d4d;
-            --oscuro: #ffffff;
-            --texto: #ffffff;
-            --fondo: #000000;
+            --dorado: #d4af37;
+            --oscuro: #0f172a;
+            --texto: #475569;
+            --fondo: #ffffff;
         }
 
         body { 
@@ -304,6 +304,14 @@
         .btn-ig { background: #E1306C; } .btn-ig:hover { background: #c1285c; }
 
     </style>
+<style>
+    :root {
+        --dorado: #ff9d4d;
+        --oscuro: #ffffff;
+        --texto: #ffffff;
+        --fondo: #000000;
+    }
+</style>
 </head>
 <body>
 
@@ -337,32 +345,28 @@
     <!-- CABECERA -->
     <header class="animado" style="margin-top: 100px;">
         <div class="logo-container">
-            <!-- LOGO CARGABLE -->
-            <div class="logo-icon img-editable" onclick="subirImagenLocal(this)">A</div>
+            <div class="logo-icon img-editable" style="background-image: url('');" onclick="subirImagenLocal(this)">A</div>
             <span class="editable" contenteditable="true">AURUMSYS</span>
         </div>
         <nav>
-            <!-- Servicios -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Servicios</span>
                 <div class="submenu">
                     <span class="submenu-item editable" contenteditable="true">Programación PLC Control, Tableros TDA, TDF.<br>Dibujo Técnico.</span>
-                    <span class="submenu-item editable" contenteditable="true">Desarrollo de Hardware, Prototipos IoT, Mecatrónica Aplicada a microcontroladores.</span>
+                    <span class="submenu-item editable" contenteditable="true">Desarrollo de Hardware, Prototipos IoT, Mecatrónica Aplicada a microcontrolador.</span>
                     <span class="submenu-item editable" contenteditable="true">Diseño y Desarrollo de interfaz Web a medida, Telemetría Real-time.</span>
                 </div>
             </div>
 
-            <!-- Proyectos -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Proyectos</span>
                 <div class="submenu">
-                    <span class="submenu-item editable" contenteditable="true">Interfaz Web a Medida.</span>
+                    <span class="submenu-item editable" contenteditable="true">Interfaz Web a Medida</span>
                     <span class="submenu-item editable" contenteditable="true">Sistema de Telemetría en Tiempo Real.</span>
-                    <span class="submenu-item editable" contenteditable="true">Monitoreo Modular IoT.</span>
+                    <span class="submenu-item editable" contenteditable="true">Monitoreo Modular IoT</span>
                 </div>
             </div>
 
-            <!-- La Empresa -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">La Empresa</span>
                 <div class="submenu">
@@ -370,12 +374,11 @@
                 </div>
             </div>
 
-            <!-- Contacto -->
             <div class="nav-item">
                 <span class="nav-principal tiene-submenu editable" contenteditable="true">Contacto</span>
                 <div class="submenu">
                     <span class="submenu-item editable" contenteditable="true">aurumsys.m@gmail.com</span>
-                    <span class="submenu-item editable" contenteditable="true">Soporte Técnico de urgencia:<br>+56 9 4928 7059</span>
+                    <span class="submenu-item editable" contenteditable="true">Soporte Técnico de urgencia<br>+569 49287059</span>
                     <span class="submenu-item editable" contenteditable="true">Paine, Santiago (Chile)</span>
                 </div>
             </div>
@@ -390,21 +393,18 @@
                 <span class="editable" contenteditable="true">Ingeniería Avanzada en</span> <br>
                 <span class="acento editable" contenteditable="true">Automatización</span>
             </h1>
-            <p class="hero-subtitle editable" contenteditable="true">Diseño y desarrollo de proyectos industriales. Optimizamos sus procesos con eficiencia, productividad y sistemas de alta precisión.</p>
+            <p class="hero-subtitle editable" contenteditable="true">Diseño y desarrollo de proyectos industriales. Optimizamos sus processes con eficiencia, productividad y sistemas de alta precisión.</p>
             
             <!-- CONTENEDOR DE BOTONES (COTIZAR + WHATSAPP) -->
             <div class="hero-botones">
-                <!-- Botón que abre el modal -->
                 <div class="hero-btn editable" contenteditable="true" onclick="abrirModal()">COTIZAR PROYECTO</div>
                 
-                <!-- Botón directo de WhatsApp -->
                 <a href="https://wa.me/56949287059" target="_blank" class="hero-btn-wsp" title="Contactar directamente por WhatsApp">
                     <svg viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.305-.88-.653-1.474-1.46-1.646-1.757-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a5.227 5.227 0 0 0-.571-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
                 </a>
             </div>
-            
         </div>
     </section>
 
@@ -417,15 +417,15 @@
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Armarios de Control</h3>
-                    <p class="editable" contenteditable="true">Integración de PLCs, trazabilidad de cableado y lógica de control industrial a medida.</p>
+                    <p class="editable" contenteditable="true">Integración de PLC, trazabilidad de cableado y lógica de control industrial a medida.</p>
                 </div>
             </div>
 
             <div class="tarjeta animado delay-2">
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
-                    <h3 class="editable" contenteditable="true">Sistemas de Pesaje</h3>
-                    <p class="editable" contenteditable="true">Instalación de Junction Boxes, celdas de carga y calibración en silos industriales.</p>
+                    <h3 class="editable" contenteditable="true">Junction Boxes</h3>
+                    <p class="editable" contenteditable="true">Instalación de sistemas de pesaje y celdas de carga.</p>
                 </div>
             </div>
 
@@ -433,7 +433,7 @@
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
                 <div class="tarjeta-cuerpo">
                     <h3 class="editable" contenteditable="true">Desarrollo IoT</h3>
-                    <p class="editable" contenteditable="true">Sistema Sonda-T: Telemetría láser y sistemas embebidos globales con ESP32.</p>
+                    <p class="editable" contenteditable="true">Diseño de placas PCB y sistemas embebidos globales.</p>
                 </div>
             </div>
         </div>
@@ -451,7 +451,7 @@
             </div>
             <div class="dato">
                 <strong class="editable" contenteditable="true">WhatsApp / Teléfono</strong>
-                <span class="editable" contenteditable="true">+56 9 4928 7059</span>
+                <span class="editable" contenteditable="true">+569 49287059</span>
             </div>
             <div class="dato">
                 <strong class="editable" contenteditable="true">Instagram</strong>
@@ -460,7 +460,7 @@
         </div>
     </section>
 
-    <!-- CUADRO MODAL DE COTIZACIÓN (NUEVO) -->
+    <!-- CUADRO MODAL DE COTIZACIÓN -->
     <div id="modal-cotizacion" class="modal-overlay">
         <div class="modal-box animado">
             <span class="btn-cerrar" onclick="cerrarModal()">&times;</span>
@@ -477,7 +477,7 @@
                 <p class="editable" contenteditable="true" style="margin:0; font-weight:bold; color:var(--oscuro);">O contáctanos directamente:</p>
                 <div class="botones-redes">
                     <a href="https://wa.me/56949287059" target="_blank" class="btn-social btn-wsp">
-                        WhatsApp: +56 9 4928 7059
+                        WhatsApp: +569 49287059
                     </a>
                     <a href="https://instagram.com/aurumsys" target="_blank" class="btn-social btn-ig">
                         Instagram: @aurumsys
@@ -489,7 +489,6 @@
 
     <!-- SCRIPTS -->
     <script>
-        // 1. SEGURO ANTI-CIERRE
         let haDescargado = false;
         window.addEventListener('beforeunload', function (e) {
             if (!haDescargado) {
@@ -498,12 +497,10 @@
             }
         });
 
-        // 2. Cambio de colores
         function cambiarColor(variable, valor) {
             document.documentElement.style.setProperty(variable, valor);
         }
 
-        // 3. Subir imágenes (Con auto-compresión y reducción inteligente)
         function subirImagenLocal(elemento) {
             let input = document.createElement('input');
             input.type = 'file';
@@ -554,7 +551,6 @@
             input.click();
         }
 
-        // 4. LÓGICA DEL CUADRO MODAL
         function abrirModal() {
             document.getElementById('modal-cotizacion').style.display = 'flex';
         }
@@ -563,7 +559,6 @@
             document.getElementById('modal-cotizacion').style.display = 'none';
         }
 
-        // Cerrar si hacen clic afuera del cuadro
         window.onclick = function(event) {
             let modal = document.getElementById('modal-cotizacion');
             if (event.target == modal) {
@@ -577,7 +572,6 @@
             cerrarModal();
         }
 
-        // 5. Exportar y Descargar Seguro
         function descargarWebFinal() {
             let boton = document.getElementById('btn-descargar');
             boton.innerText = "⏳ PROCESANDO...";
@@ -605,17 +599,15 @@
                     styleTag.innerHTML = coloresPersonalizados;
                     clon.querySelector('head').appendChild(styleTag);
 
-                    // Asegurarse de que el modal esté oculto en el archivo descargado
                     clon.querySelector('#modal-cotizacion').style.display = 'none';
 
                     let editables = clon.querySelectorAll('[contenteditable]');
                     editables.forEach(el => {
                         el.removeAttribute('contenteditable');
                         el.classList.remove('editable');
-                        el.removeAttribute('onclick'); // Quita funciones onclick sueltas de edición
+                        el.removeAttribute('onclick');
                     });
 
-                    // Reactivar el botón de cotizar para el cliente final
                     let heroBtn = clon.querySelector('.hero-btn');
                     if(heroBtn) heroBtn.setAttribute('onclick', 'abrirModal()');
 
@@ -625,12 +617,9 @@
                         img.classList.remove('img-editable');
                     });
 
-                    // Aquí NO borramos los scripts, porque los necesitamos para que el Modal y Formulario funcionen
-                    // Solo borramos la advertencia de "No cerrar" (unload)
                     let oldScripts = clon.querySelectorAll('script');
                     oldScripts.forEach(s => s.remove());
 
-                    // Re-inyectamos SOLO el script necesario para el cliente final
                     let scriptFinal = clon.createElement('script');
                     scriptFinal.innerHTML = `
                         function abrirModal() { document.getElementById('modal-cotizacion').style.display = 'flex'; }
