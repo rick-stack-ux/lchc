@@ -236,24 +236,23 @@
         .hero-btn-wsp:hover { background: #1ebe5d; transform: scale(1.05); }
         .hero-btn-wsp svg { width: 24px; height: 24px; fill: currentColor; }
 
-        /* Proyectos (GRILLA DINÁMICA, FLEXIBLE Y PROPORCIONAL) */
-        .proyectos { padding: 80px 5%; background-color: var(--fondo); }
-        .titulo-seccion { text-align: center; font-size: 36px; font-weight: 800; margin: 0 0 60px 0; color: var(--oscuro); }
+        /* Proyectos (SIN TÍTULO, ANCHO COMPLETO, ESPACIOS REDUCIDOS) */
+        .proyectos { padding: 40px 2%; background-color: var(--fondo); }
         
-        /* Uso de Flexbox para que las tarjetas se centren inteligentemente */
+        /* Grilla ultra ancha */
         .grid { 
             display: flex; 
             flex-wrap: wrap; 
-            justify-content: center; /* Centra las tarjetas huerfanas abajo */
-            gap: 40px; 
+            justify-content: center; 
+            gap: 30px; 
             width: 100%;
-            max-width: 1600px; /* Aumentado para pantallas grandes */
+            max-width: 98%; /* Ocupa casi toda la pantalla hacia los lados */
             margin: 0 auto; 
         }
         
         .tarjeta { 
-            flex: 1 1 400px; /* Crecen proporcionalmente con una base más ancha */
-            max-width: 480px; /* Evita que se estiren al infinito si quedan solas */
+            flex: 1 1 450px; /* Tamaño base mucho más ancho */
+            max-width: 700px; /* Límite ampliado para que las cajas crezcan y llenen espacios vacíos */
             border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 12px; 
             overflow: hidden; 
@@ -265,7 +264,6 @@
         }
         .tarjeta:hover { transform: translateY(-10px); border-color: var(--dorado); }
         
-        /* Imagen más alta y proporcional */
         .tarjeta-img { width: 100%; height: 350px; background-size: cover; background-position: center; background-color: #1a1a1a; }
         .tarjeta-cuerpo { padding: 35px; flex-grow: 1; }
         .tarjeta-cuerpo h3 { margin: 0 0 15px 0; font-size: 24px; font-weight: 700; color: var(--oscuro); text-transform: uppercase; }
@@ -344,7 +342,7 @@
     <!-- BARRA DE EDICIÓN FLOTANTE -->
     <div id="editor-toolbar" data-html2canvas-ignore="true">
         <div class="toolbar-top">
-            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Carga directa PC activada. Diseño adaptativo a pantalla completa.</span>
+            <span>🛠️ <strong>MODO EDICIÓN ACTIVO:</strong> Carga directa PC activada. Pantalla completa y sin espacios muertos.</span>
             <button id="btn-descargar" onclick="descargarWebFinal()">💾 DESCARGAR WEB FINAL</button>
         </div>
         <div class="toolbar-bottom">
@@ -434,10 +432,8 @@
         </div>
     </section>
 
-    <!-- PROYECTOS DESTACADOS -->
+    <!-- PROYECTOS (AHORA A PANTALLA COMPLETA Y SIN TÍTULO) -->
     <section class="proyectos">
-        <h2 class="titulo-seccion editable animado" contenteditable="true">Proyectos Destacados</h2>
-        
         <div class="grid">
             <div class="tarjeta animado delay-1">
                 <div class="tarjeta-img img-editable" onclick="subirImagenLocal(this)"></div>
